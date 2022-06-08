@@ -92,4 +92,9 @@ public class DeliveryService {
     public double requestPackage(int droneID, int barcode, int quantity) {
         return 0;
     }
+
+    public String toString() {
+        return "Delivery Service: " + name + ", ID: " + id + " has made $" + revenue
+                + " in revenue and is located at: " + location;
+    }
 }

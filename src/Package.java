@@ -38,7 +38,23 @@ public class Package {
         price = p;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int q) {
+        quantity = q;
+    }
+
+    public void loadPackage(int addedQuantity) {
+        setQuantity(addedQuantity + quantity);
+    }
+
+    public void unloadPackage(int subtractedQuantity) {
+        setQuantity(subtractedQuantity + quantity);
+    }
+
     public String toString() {
-        return ingredient + " Price: $" + price;
+        return ingredient + " Price: $" + price + " Quantity: " + quantity;
     }
 }

@@ -50,7 +50,7 @@ public class Restaurant {
     }
 
     public void purchasePackage(DeliveryService service, int droneID, int barcode, int quantity) {
-
+        moneySpent += service.requestPackage(droneID, barcode, quantity);
     }
 
     public String toString() {

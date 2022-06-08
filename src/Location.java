@@ -51,6 +51,14 @@ public class Location {
         currCapacity = cc;
     }
 
+    public void addDrone() {
+        setCurrCapacity(currCapacity + 1);
+    }
+
+    public void removeDrone() {
+        setCurrCapacity(currCapacity - 1);
+    }
+
     /**
      * Returns the distance between two locations.
      * @param destination

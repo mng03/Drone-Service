@@ -90,11 +90,18 @@ public class Drone {
     }
 
     public void loadPackage(Package packageToAdd) {
-
+        if (packages.containsKey(packageToAdd.getIngredient().getBarcode())) {
+            packages.get(packageToAdd.getIngredient().getBarcode()).loadPackage(packageToAdd.getQuantity());
+        } else {
+            packages.put(packageToAdd.getIngredient().getBarcode(), packageToAdd);
+        }
     }
 
     public void fly(Location destination) {
-
+        fuel -= currLocation.calcDistance(destination);
+        currLocation.removeDrone();
+        currLocation = destination;
+        destination.addDrone();
     }
 
     public double getPackage(int barcode, int quantity) {
