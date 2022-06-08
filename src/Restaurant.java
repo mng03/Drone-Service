@@ -7,4 +7,53 @@ package src;
  * @version 1.0
  */
 public class Restaurant {
+    private String name;
+    private double moneySpent;
+    private Location location;
+
+    public Restaurant(String name, Location location) {
+        this.name = name;
+        this.location = location;
+        moneySpent = 0;
+    }
+
+    public Restaurant(String name, int x, int y, int spaceLimit, int currCapacity) {
+        this(name, new Location(x, y, spaceLimit, currCapacity));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getMoneySpent() {
+        return moneySpent;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setName(String n) {
+        name = n;
+    }
+
+    public void setMoneySpent(double ms) {
+        moneySpent = ms;
+    }
+
+    public void setLocation(Location loc) {
+        location = loc;
+    }
+
+    public void incrementMoneySpent(double moreMoney) {
+        setMoneySpent(moreMoney + moneySpent);
+    }
+
+    public void purchasePackage(DeliveryService service, int droneID, int barcode, int quantity) {
+
+    }
+
+    public String toString() {
+        return "Restaurant: " + name + " has spent: $" + moneySpent;
+    }
 }

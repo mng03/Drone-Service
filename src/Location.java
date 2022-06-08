@@ -12,7 +12,7 @@ public class Location {
     private int spaceLimit;
     private int currCapacity;
 
-    public Location(int x, int y, int SpaceLimit, int currCapacity) {
+    public Location(int x, int y, int spaceLimit, int currCapacity) {
         this.x = x;
         this.y = y;
         this.spaceLimit = spaceLimit;

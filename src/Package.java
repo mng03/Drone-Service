@@ -10,14 +10,16 @@ package src;
 public class Package {
     private Ingredient ingredient;
     private double price;
+    private int quantity;
 
-    public Package(Ingredient ingredient, double price) {
+    public Package(Ingredient ingredient, double price, int quantity) {
         this.ingredient = ingredient;
         this.price = price;
+        this.quantity = quantity;
     }
 
-    public Package(int barcode, String name, int unitWeight, int price) {
-        this(new Ingredient(barcode, name, unitWeight), price);
+    public Package(int barcode, String name, int unitWeight, int price, int quantity) {
+        this(new Ingredient(barcode, name, unitWeight), price, quantity);
     }
 
     public Ingredient getIngredient() {
