@@ -10,11 +10,13 @@ public class Location {
     private int x;
     private int y;
     private int spaceLimit;
+    private int currCapacity;
 
-    public Location(int x, int y, int SpaceLimit) {
+    public Location(int x, int y, int SpaceLimit, int currCapacity) {
         this.x = x;
         this.y = y;
         this.spaceLimit = spaceLimit;
+        this.currCapacity = currCapacity;
     }
 
     public int getXCoord() {
@@ -29,6 +31,10 @@ public class Location {
         return spaceLimit;
     }
 
+    public int getCurrCapacity() {
+        return currCapacity;
+    }
+
     public void setXCoord(int xCoord) {
         x = xCoord;
     }
@@ -39,6 +45,10 @@ public class Location {
 
     public void setSpaceLimit(int sL) {
         spaceLimit = sL;
+    }
+
+    public void setCurrCapacity(int cc) {
+        currCapacity = cc;
     }
 
     /**
