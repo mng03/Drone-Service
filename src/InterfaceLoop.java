@@ -17,7 +17,6 @@ public class InterfaceLoop {
     }
 
     void makeIngredient(String init_barcode, String init_name, Integer init_weight) {
-        //TODO: So both barcode and init_name have to be unique?
         if (init_barcode.equals("")) {
             System.out.println("ERROR:ingredient_barcode_cannot_be_empty");
         } else if (ingredientInfos.containsKey(init_barcode)) {
@@ -40,7 +39,6 @@ public class InterfaceLoop {
     }
 
     void makeLocation(String init_name, Integer init_x_coord, Integer init_y_coord, Integer init_space_limit) {
-        //TODO: Can locations have the same coordinates?
         if(init_name.equals("")) {
             System.out.println("ERROR:location_name_cannot_be_empty");
         } else if (locations.containsKey(init_name)) {
@@ -71,16 +69,16 @@ public class InterfaceLoop {
     }
 
     void makeDeliveryService(String init_name, Integer init_revenue, String located_at) {
-        //TODO: Is name unique or the ID?
         if(init_name.equals("")) {
             System.out.println("ERROR:delivery_service_name_cannot_be_empty");
         } else if (deliveryServices.containsKey(init_name)) {
             System.out.println("ERROR:delivery_service_name_already_exists");
         } else if (!locations.containsKey(located_at)) {
             System.out.println("ERROR:location_does_not_exist");
-            //TODO: Does init_revenue need to be >= 0?
+        } else if (init_revenue < 0) {
+            System.out.println("ERROR:revenue_cannot_be_negative");
         } else {
-            deliveryServices.put(init_name, new DeliveryService(deliveryServices.size(), init_name, locations.get(located_at)));
+            deliveryServices.put(init_name, new DeliveryService(init_name, init_revenue, locations.get(located_at)));
             System.out.println("OK:change_completed");
         }
     }
@@ -113,26 +111,22 @@ public class InterfaceLoop {
     }
 
     void makeDrone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel) {
-        //TODO: do we display all error messages at once?
-        //TODO: TEST DRONE METHODS
         if (!deliveryServices.containsKey(service_name)) {
             System.out.println("ERROR:service_does_not_exist");
-        } else {
-            DeliveryService service = deliveryServices.get(service_name);
-            if (service.getLocation().getCurrSpots() == 0) {
-                System.out.println("ERROR:not_enough_space_to_create_new_drone");
-            } else if (service.getDrones().containsKey(init_tag)) {
-                System.out.println("ERROR:drone_with_tag_already_exists_in_service");
-            } else if (init_capacity < 0) {
-                System.out.println("ERROR:drone_capacity_cannot_be_negative");
-            } 
-            else if (init_fuel < 0) {
-                System.out.println("ERROR:drone_fuel_cannot_be_negative");
-            } else {
-                service.getDrones().put(init_tag, new Drone(init_tag, init_capacity, init_fuel, service));
-                System.out.println("OK:change_completed");
-            }
+        } else if (init_capacity < 0) {
+            System.out.println("ERROR:drone_capacity_cannot_be_negative");
         } 
+        else if (init_fuel < 0) {
+            System.out.println("ERROR:drone_fuel_cannot_be_negative");
+        } else {
+            try {
+                deliveryServices.get(service_name).purchaseDrone(init_tag, init_capacity, init_fuel);
+                System.out.println("OK:change_completed");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            
+        }
     }
 
     void displayDrones(String service_name) {
@@ -150,17 +144,60 @@ public class InterfaceLoop {
         for (DeliveryService deliveryService : deliveryServices.values()) {
             System.out.println("service name [" + deliveryService.getName() + "] drones:");
             for (Drone drone : deliveryService.getDrones().values()) {
-                System.out.println("&> " + drone);
+                System.out.println(drone);
             }
         }
         System.out.println("OK:display_completed");
     }
 
-    void flyDrone(String service_name, Integer drone_tag, String destination_name) { }
+    void flyDrone(String service_name, Integer drone_tag, String destination_name) {
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else if (!locations.containsKey(destination_name)) {
+            System.out.println("ERROR:location_does_not_exist");
+        } else {
+            try {
+                deliveryServices.get(service_name).flyDrone(drone_tag, locations.get(destination_name));
+                System.out.println("OK:change_completed");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
-    void loadIngredient(String service_name, Integer drone_tag, String barcode, Integer quantity, Integer unit_price) { }
+    void loadIngredient(String service_name, Integer drone_tag, String barcode, Integer quantity, Integer unit_price) {
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else if (!ingredientInfos.containsKey(barcode)) {
+            System.out.println("ERROR:ingredient_does_not_exist");
+        } else if (quantity <= 0) {
+            System.out.println("ERROR:ingredient_must_be_have_a_positive_quantity");
+        } else if (unit_price < 0) {
+            System.out.println("ERROR:unit_price_cannot_be_negative");
+        } else {
+            try {
+                deliveryServices.get(service_name).loadPackage(drone_tag, ingredientInfos.get(barcode), quantity, unit_price);
+                System.out.println("OK:change_completed");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
 
-    void loadFuel(String service_name, Integer drone_tag, Integer petrol) { }
+        }
+    }
+
+    void loadFuel(String service_name, Integer drone_tag, Integer petrol) {
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else {
+            try {
+                deliveryServices.get(service_name).loadFuel(drone_tag, petrol);
+                System.out.println("OK:change_completed");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        }
+    }
 
     void purchaseIngredient(String restaurant_name, String service_name, Integer drone_tag, String barcode, Integer quantity) { }
 

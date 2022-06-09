@@ -13,26 +13,26 @@ public class Drone {
     private int uniqueID;
     private int fuelMax;
     private int capacity;
-    //TODO: Would it not be better just to have location reference?
-    private DeliveryService service;
+    private Location homeBase;
 
     private Map<String, Package> packages;
     private int fuel;
-    private double sales;
+    private int sales;
     private int currCapacity;
     private Location currLocation;
 
-    public Drone(int uniqueID, int capacity, int fuelMax, DeliveryService service) {
+    public Drone(int uniqueID, int capacity, int fuelMax, Location location) {
         this.uniqueID = uniqueID;
         this.capacity = capacity;
         this.fuelMax = fuelMax;
-        this.service = service;
+        this.homeBase = location;
 
         packages = new HashMap<String, Package>();
-        fuel = 0;
+        fuel = fuelMax;
         sales = 0;
-        currCapacity = 0;
-        currLocation = service.getLocation();
+        currCapacity = capacity;
+        currLocation = location;
+        homeBase.addDrone();
     }
 
     public int getUniqueID() {
@@ -47,8 +47,8 @@ public class Drone {
         return capacity;
     }
 
-    public DeliveryService getService() {
-        return service;
+    public Location getHomeBase() {
+        return homeBase;
     }
 
     public Map<String, Package> getPackages() {
@@ -76,26 +76,17 @@ public class Drone {
     }
 
     public void addFuel(int petrol) {
-        setFuel(petrol + fuel);
-    }
-
-    /**
-     * Calculates the total distance the drone would have to travel to reach a
-     * destination from its current location and also fly back to its home base
-     * location.
-     * @param destination The location the drone might fly to
-     * @return the total distance it would have to travel
-     */
-    public int calcDistance(Location destination) {
-        return currLocation.calcDistance(destination) + destination.calcDistance(service.getLocation());
+        fuel += petrol;
     }
 
     public void loadPackage(Package packageToAdd) {
-        if (packages.containsKey(packageToAdd.getIngredient().getBarcode())) {
-            packages.get(packageToAdd.getIngredient().getBarcode()).loadPackage(packageToAdd.getQuantity());
+        String barcode = packageToAdd.getIngredient().getBarcode();
+        if (packages.containsKey(barcode)) {
+            packages.get(barcode).addToPackage(packageToAdd.getQuantity());
         } else {
-            packages.put(packageToAdd.getIngredient().getBarcode(), packageToAdd);
+            packages.put(barcode, packageToAdd);
         }
+        currCapacity -= packageToAdd.getQuantity();
     }
 
     public void fly(Location destination) {
@@ -105,13 +96,17 @@ public class Drone {
         destination.addDrone();
     }
 
-    public double getPackage(int barcode, int quantity) {
+    public int getPackage(int barcode, int quantity) {
         return 0;
     }
 
     public String toString() {
-        //TODO: Make string for drone
-        return "";
+        String text = "tag: " + uniqueID + ", capacity: " + capacity + ", remaining_cap: " + currCapacity +
+        ", fuel: " + fuel + ", sales: $" + sales + ", location: " + currLocation.getName();
+        for (Package pck : packages.values()) {
+            text += "\n" + pck;
+        }
+        return text;
     }
 
 }

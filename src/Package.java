@@ -9,12 +9,12 @@ package src;
  */
 public class Package {
     private IngredientInfo ingredient;
-    private double price;
+    private int unit_price;
     private int quantity;
 
-    public Package(IngredientInfo ingredient, double price, int quantity) {
+    public Package(IngredientInfo ingredient, int price, int quantity) {
         this.ingredient = ingredient;
-        this.price = price;
+        this.unit_price = price;
         this.quantity = quantity;
     }
 
@@ -26,16 +26,16 @@ public class Package {
         return ingredient;
     }
 
-    public double getPrice() {
-        return price;
+    public double getUnitPrice() {
+        return unit_price;
     }
 
     public void setIngredient(IngredientInfo i) {
         ingredient = i;
     }
 
-    public void setPrice(double p) {
-        price = p;
+    public void setUnitPrice(int p) {
+        unit_price = p;
     }
 
     public int getQuantity() {
@@ -46,7 +46,7 @@ public class Package {
         quantity = q;
     }
 
-    public void loadPackage(int addedQuantity) {
+    public void addToPackage(int addedQuantity) {
         setQuantity(addedQuantity + quantity);
     }
 
@@ -55,6 +55,7 @@ public class Package {
     }
 
     public String toString() {
-        return ingredient + " Price: $" + price + " Quantity: " + quantity;
+        return "&> barcode: " + ingredient.getBarcode() + ", item_name: " + ingredient.getName() + ", total_quantity: " +
+            quantity + ", unit_cost: " + unit_price + ", total_weight: " + (quantity * ingredient.getUnitWeight());
     }
 }
