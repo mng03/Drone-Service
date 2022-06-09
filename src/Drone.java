@@ -105,13 +105,14 @@ public class Drone {
         } else {
             Package pkg = packages.get(barcode);
             if (pkg.getQuantity() - quantity < 0) {
-                throw new Exception("drone_does_not_have_enough_ingredient");
+                throw new Exception("ERROR:drone_does_not_have_enough_ingredient");
             }
             int saleAmount = pkg.unloadPackage(quantity);
             sales += saleAmount;
             if(pkg.getQuantity() == 0) {
                 packages.remove(barcode);
             }
+            currCapacity += quantity;
             return saleAmount;
         }
     }
