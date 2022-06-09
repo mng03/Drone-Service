@@ -7,18 +7,40 @@ public class InterfaceLoop {
     private HashMap<String, Location> locations;
     private HashMap<String, DeliveryService> deliveryServices;
     private HashMap<String, Restaurant> restaurants;
+    private HashMap<String, IngredientInfo> ingredientInfos; 
 
     InterfaceLoop() { 
         locations = new HashMap<String, Location>();
         deliveryServices = new HashMap<String, DeliveryService>();
         restaurants = new HashMap<String, Restaurant>();
+        ingredientInfos = new HashMap<String, IngredientInfo>();
     }
 
-    void makeIngredient(String init_barcode, String init_name, Integer init_weight) { }
+    void makeIngredient(String init_barcode, String init_name, Integer init_weight) {
+        //TODO: So both barcode and init_name have to be unique?
+        if (init_barcode.equals("")) {
+            System.out.println("ERROR:ingredient_barcode_cannot_be_empty");
+        } else if (ingredientInfos.containsKey(init_barcode)) {
+            System.out.println("ERROR:ingredient_barcode_already_exists");
+        } else if (init_name.equals("")) {
+            System.out.println("ERROR:ingredient_name_cannot_be_empty");
+        } else if (init_weight < 0) {
+            System.out.println("ERROR:ingredient_cannot_have_negative_weight");
+        } else {
+            ingredientInfos.put(init_barcode, new IngredientInfo(init_barcode, init_name, init_weight));
+            System.out.println("OK:change_completed");
+        }
+    }
 
-    void displayIngredients() { }
+    void displayIngredients() {
+        for (IngredientInfo ingredientInfo : ingredientInfos.values()) {
+            System.out.println(ingredientInfo);
+        }
+        System.out.println("OK:display_completed");
+    }
 
     void makeLocation(String init_name, Integer init_x_coord, Integer init_y_coord, Integer init_space_limit) {
+        //TODO: Can locations have the same coordinates?
         if(init_name.equals("")) {
             System.out.println("ERROR:location_name_cannot_be_empty");
         } else if (locations.containsKey(init_name)) {
@@ -38,7 +60,15 @@ public class InterfaceLoop {
         System.out.println("OK:display_completed");
     }
 
-    void checkDistance(String departure_point, String arrival_point) { }
+    void checkDistance(String departure_point, String arrival_point) {
+        if (!locations.containsKey(departure_point)) {
+            System.out.println("ERROR:departure_location_does_not_exist");
+        } else if (!locations.containsKey(arrival_point)) {
+            System.out.println("ERROR:arrival_location_does_not_exist");
+        } else {
+            System.out.println("OK:distance = " + locations.get(departure_point).calcDistance(locations.get(arrival_point)));
+        }
+    }
 
     void makeDeliveryService(String init_name, Integer init_revenue, String located_at) {
         //TODO: Is name unique or the ID?
@@ -82,11 +112,49 @@ public class InterfaceLoop {
         System.out.println("OK:display_completed");
     }
 
-    void makeDrone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel) { }
+    void makeDrone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel) {
+        //TODO: do we display all error messages at once?
+        //TODO: TEST DRONE METHODS
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else {
+            DeliveryService service = deliveryServices.get(service_name);
+            if (service.getLocation().getCurrSpots() == 0) {
+                System.out.println("ERROR:not_enough_space_to_create_new_drone");
+            } else if (service.getDrones().containsKey(init_tag)) {
+                System.out.println("ERROR:drone_with_tag_already_exists_in_service");
+            } else if (init_capacity < 0) {
+                System.out.println("ERROR:drone_capacity_cannot_be_negative");
+            } 
+            else if (init_fuel < 0) {
+                System.out.println("ERROR:drone_fuel_cannot_be_negative");
+            } else {
+                service.getDrones().put(init_tag, new Drone(init_tag, init_capacity, init_fuel, service));
+                System.out.println("OK:change_completed");
+            }
+        } 
+    }
 
-    void displayDrones(String service_name) { }
+    void displayDrones(String service_name) {
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else {
+            for (Drone drone : deliveryServices.get(service_name).getDrones().values()) {
+                System.out.println(drone);
+            }
+            System.out.println("OK:display_completed");
+        }
+    }
 
-    void displayAllDrones() { }
+    void displayAllDrones() {
+        for (DeliveryService deliveryService : deliveryServices.values()) {
+            System.out.println("service name [" + deliveryService.getName() + "] drones:");
+            for (Drone drone : deliveryService.getDrones().values()) {
+                System.out.println("&> " + drone);
+            }
+        }
+        System.out.println("OK:display_completed");
+    }
 
     void flyDrone(String service_name, Integer drone_tag, String destination_name) { }
 

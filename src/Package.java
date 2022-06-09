@@ -8,21 +8,21 @@ package src;
  * @version 1.0
  */
 public class Package {
-    private Ingredient ingredient;
+    private IngredientInfo ingredient;
     private double price;
     private int quantity;
 
-    public Package(Ingredient ingredient, double price, int quantity) {
+    public Package(IngredientInfo ingredient, double price, int quantity) {
         this.ingredient = ingredient;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public Package(int barcode, String name, int unitWeight, int price, int quantity) {
-        this(new Ingredient(barcode, name, unitWeight), price, quantity);
+    public Package(String barcode, String name, int unitWeight, int price, int quantity) {
+        this(new IngredientInfo(barcode, name, unitWeight), price, quantity);
     }
 
-    public Ingredient getIngredient() {
+    public IngredientInfo getIngredient() {
         return ingredient;
     }
 
@@ -30,7 +30,7 @@ public class Package {
         return price;
     }
 
-    public void setIngredient(Ingredient i) {
+    public void setIngredient(IngredientInfo i) {
         ingredient = i;
     }
 

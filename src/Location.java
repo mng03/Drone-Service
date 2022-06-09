@@ -52,7 +52,7 @@ public class Location {
     }
 
     public void removeDrone() {
-        currSpots--;
+        currSpots++;
     }
 
     /**

@@ -77,7 +77,7 @@ public class DeliveryService {
 
     }
 
-    public void loadPackage(int droneID, Ingredient ingredient, int quantity, double unitPrice) {
+    public void loadPackage(int droneID, IngredientInfo ingredient, int quantity, double unitPrice) {
 
     }
 

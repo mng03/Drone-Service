@@ -13,9 +13,10 @@ public class Drone {
     private int uniqueID;
     private int fuelMax;
     private int capacity;
+    //TODO: Would it not be better just to have location reference?
     private DeliveryService service;
 
-    private Map<Integer, Package> packages;
+    private Map<String, Package> packages;
     private int fuel;
     private double sales;
     private int currCapacity;
@@ -27,7 +28,7 @@ public class Drone {
         this.fuelMax = fuelMax;
         this.service = service;
 
-        packages = new HashMap<Integer, Package>();
+        packages = new HashMap<String, Package>();
         fuel = 0;
         sales = 0;
         currCapacity = 0;
@@ -50,7 +51,7 @@ public class Drone {
         return service;
     }
 
-    public Map<Integer, Package> getPackages() {
+    public Map<String, Package> getPackages() {
         return packages;
     }
 
@@ -109,17 +110,8 @@ public class Drone {
     }
 
     public String toString() {
-        String packagesString = "[";
-        for (int i = 0; i < currCapacity; i++) {
-            packagesString += packages.get(0);
-            if (i < currCapacity - 1) {
-                packagesString += ", ";
-            }
-        }
-        packagesString += "]";
-        return "Drone: " + uniqueID + " in Delivery Service: " + service
-                + " is currently carrying: " + packagesString + " and has made $"
-                + sales + " in sales.";
+        //TODO: Make string for drone
+        return "";
     }
 
 }
