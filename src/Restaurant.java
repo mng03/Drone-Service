@@ -8,7 +8,7 @@ package src;
  */
 public class Restaurant {
     private String name;
-    private double moneySpent;
+    private int moneySpent;
     private Location location;
 
     public Restaurant(String name, Location location) {
@@ -33,7 +33,7 @@ public class Restaurant {
         name = n;
     }
 
-    public void setMoneySpent(double ms) {
+    public void setMoneySpent(int ms) {
         moneySpent = ms;
     }
 
@@ -41,7 +41,7 @@ public class Restaurant {
         location = loc;
     }
 
-    public void incrementMoneySpent(double moreMoney) {
+    public void incrementMoneySpent(int moreMoney) {
         setMoneySpent(moreMoney + moneySpent);
     }
 
@@ -50,6 +50,6 @@ public class Restaurant {
     }
 
     public String toString() {
-        return "Restaurant: " + name + " has spent: $" + moneySpent;
+        return "name: " + name + ", money_spent: $" + moneySpent +", location: " + location.getName();
     }
 }

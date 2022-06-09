@@ -5,9 +5,13 @@ import java.util.HashMap;
 
 public class InterfaceLoop {
     private HashMap<String, Location> locations;
+    private HashMap<String, DeliveryService> deliveryServices;
+    private HashMap<String, Restaurant> restaurants;
 
     InterfaceLoop() { 
         locations = new HashMap<String, Location>();
+        deliveryServices = new HashMap<String, DeliveryService>();
+        restaurants = new HashMap<String, Restaurant>();
     }
 
     void makeIngredient(String init_barcode, String init_name, Integer init_weight) { }
@@ -36,13 +40,47 @@ public class InterfaceLoop {
 
     void checkDistance(String departure_point, String arrival_point) { }
 
-    void makeDeliveryService(String init_name, Integer init_revenue, String located_at) { }
+    void makeDeliveryService(String init_name, Integer init_revenue, String located_at) {
+        //TODO: Is name unique or the ID?
+        if(init_name.equals("")) {
+            System.out.println("ERROR:delivery_service_name_cannot_be_empty");
+        } else if (deliveryServices.containsKey(init_name)) {
+            System.out.println("ERROR:delivery_service_name_already_exists");
+        } else if (!locations.containsKey(located_at)) {
+            System.out.println("ERROR:location_does_not_exist");
+            //TODO: Does init_revenue need to be >= 0?
+        } else {
+            deliveryServices.put(init_name, new DeliveryService(deliveryServices.size(), init_name, locations.get(located_at)));
+            System.out.println("OK:change_completed");
+        }
+    }
 
-    void displayServices() { }
+    void displayServices() {
+        for (DeliveryService deliveryService : deliveryServices.values()) {
+            System.out.println(deliveryService);
+        }
+        System.out.println("OK:display_completed");
+    }
 
-    void makeRestaurant(String init_name, String located_at) { }
+    void makeRestaurant(String init_name, String located_at) {
+        if(init_name.equals("")) {
+            System.out.println("ERROR:restaurant_name_cannot_be_empty");
+        } else if (restaurants.containsKey(init_name)) {
+            System.out.println("ERROR:restaurant_name_already_exists");
+        } else if (!locations.containsKey(located_at)) {
+            System.out.println("ERROR:location_does_not_exist");
+        } else {
+            restaurants.put(init_name, new Restaurant(init_name, locations.get(located_at)));
+            System.out.println("OK:change_completed");
+        }
+    }
 
-    void displayRestaurants() { }
+    void displayRestaurants() {
+        for (Restaurant restaurant : restaurants.values()) {
+            System.out.println(restaurant);
+        }
+        System.out.println("OK:display_completed");
+    }
 
     void makeDrone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel) { }
 

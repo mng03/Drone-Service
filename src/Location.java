@@ -20,7 +20,9 @@ public class Location {
         this.spaceLimit = spaceLimit;
         this.currSpots = spaceLimit;
     }
-
+    public String getName() {
+        return name;
+    }
     public int getXCoord() {
         return x;
     }

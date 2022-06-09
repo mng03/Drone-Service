@@ -1,7 +1,6 @@
 package src;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,6 +10,7 @@ import java.util.Map;
  * @version 1.0
  */
 public class DeliveryService {
+    //TODO: Is id a string or an int?
     private int id;
     private String name;
     private double revenue;
@@ -90,7 +90,6 @@ public class DeliveryService {
     }
 
     public String toString() {
-        return "Delivery Service: " + name + ", ID: " + id + " has made $" + revenue
-                + " in revenue and is located at: " + location;
+        return "name: " + name + ", revenue: $" + revenue + ", location: " + location.getName();
     }
 }
