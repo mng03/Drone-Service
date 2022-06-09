@@ -85,7 +85,7 @@ public class Drone {
      * @param destination The location the drone might fly to
      * @return the total distance it would have to travel
      */
-    public int calcTotalDistance(Location destination) {
+    public int calcDistance(Location destination) {
         return currLocation.calcDistance(destination) + destination.calcDistance(service.getLocation());
     }
 

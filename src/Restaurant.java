@@ -17,10 +17,6 @@ public class Restaurant {
         moneySpent = 0;
     }
 
-    public Restaurant(String name, int x, int y, int spaceLimit, int currCapacity) {
-        this(name, new Location(x, y, spaceLimit, currCapacity));
-    }
-
     public String getName() {
         return name;
     }

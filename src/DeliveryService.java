@@ -25,10 +25,6 @@ public class DeliveryService {
         drones = new HashMap<Integer, Drone>();
     }
 
-    public DeliveryService(int id, String name, int x, int y, int spaceLimit, int currCapacity) {
-        this(id, name, new Location(x, y, spaceLimit, currCapacity));
-    }
-
     public int getID() {
         return id;
     }

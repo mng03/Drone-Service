@@ -7,16 +7,18 @@ package src;
  * @version 1.0
  */
 public class Location {
+    private String name;
     private int x;
     private int y;
     private int spaceLimit;
-    private int currCapacity;
+    private int currSpots;
 
-    public Location(int x, int y, int spaceLimit, int currCapacity) {
+    public Location(String name, int x, int y, int spaceLimit) {
+        this.name = name;
         this.x = x;
         this.y = y;
         this.spaceLimit = spaceLimit;
-        this.currCapacity = currCapacity;
+        this.currSpots = spaceLimit;
     }
 
     public int getXCoord() {
@@ -31,8 +33,8 @@ public class Location {
         return spaceLimit;
     }
 
-    public int getCurrCapacity() {
-        return currCapacity;
+    public int getCurrSpots() {
+        return currSpots;
     }
 
     public void setXCoord(int xCoord) {
@@ -43,20 +45,12 @@ public class Location {
         y = yCoord;
     }
 
-    public void setSpaceLimit(int sL) {
-        spaceLimit = sL;
-    }
-
-    public void setCurrCapacity(int cc) {
-        currCapacity = cc;
-    }
-
     public void addDrone() {
-        setCurrCapacity(currCapacity + 1);
+        currSpots--;
     }
 
     public void removeDrone() {
-        setCurrCapacity(currCapacity - 1);
+        currSpots--;
     }
 
     /**
@@ -70,6 +64,6 @@ public class Location {
     }
 
     public String toString() {
-        return "X-Coordinate: " + x + " Y-Coordinate: " + y + "Drone Space Limit: " + spaceLimit;
+        return "name: " + name + ", (x,y): (" + x + ", " + y + "), space: [" + currSpots + " / " + spaceLimit + "] remaining";
     }
 }

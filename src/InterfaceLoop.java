@@ -1,19 +1,38 @@
 package src;
 
 import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 public class InterfaceLoop {
+    private HashMap<String, Location> locations;
 
-    InterfaceLoop() { }
+    InterfaceLoop() { 
+        locations = new HashMap<String, Location>();
+    }
 
     void makeIngredient(String init_barcode, String init_name, Integer init_weight) { }
 
     void displayIngredients() { }
 
-    void makeLocation(String init_name, Integer init_x_coord, Integer init_y_coord, Integer init_space_limit) { }
+    void makeLocation(String init_name, Integer init_x_coord, Integer init_y_coord, Integer init_space_limit) {
+        if(init_name.equals("")) {
+            System.out.println("ERROR:location_name_cannot_be_empty");
+        } else if (locations.containsKey(init_name)) {
+            System.out.println("ERROR:location_name_already_exists");
+        } else if (init_space_limit < 0) {
+            System.out.println("ERROR:location_cannot_have_a_negative_space_limit");
+        } else {
+            locations.put(init_name, new Location(init_name, init_x_coord, init_y_coord, init_space_limit));
+            System.out.println("OK:change_completed");
+        }
+    }
 
-    void displayLocations() { }
+    void displayLocations() {
+        for (Location location : locations.values()) {
+            System.out.println(location);
+        }
+        System.out.println("OK:display_completed");
+    }
 
     void checkDistance(String departure_point, String arrival_point) { }
 
