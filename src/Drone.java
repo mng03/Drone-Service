@@ -77,6 +77,9 @@ public class Drone {
 
     public void addFuel(int petrol) {
         fuel += petrol;
+        if (fuel > fuelMax) {
+            fuel = fuelMax;
+        }
     }
 
     public void loadPackage(Package packageToAdd) {
@@ -96,8 +99,21 @@ public class Drone {
         destination.addDrone();
     }
 
-    public int getPackage(int barcode, int quantity) {
-        return 0;
+    public int getPackage(String barcode, int quantity) throws Exception {
+        if (!packages.containsKey(barcode)) {
+            throw new Exception("ERROR:drone_does_not_have_ingredient");
+        } else {
+            Package pkg = packages.get(barcode);
+            if (pkg.getQuantity() - quantity < 0) {
+                throw new Exception("drone_does_not_have_enough_ingredient");
+            }
+            int saleAmount = pkg.unloadPackage(quantity);
+            sales += saleAmount;
+            if(pkg.getQuantity() == 0) {
+                packages.remove(barcode);
+            }
+            return saleAmount;
+        }
     }
 
     public String toString() {

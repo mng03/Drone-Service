@@ -199,7 +199,24 @@ public class InterfaceLoop {
         }
     }
 
-    void purchaseIngredient(String restaurant_name, String service_name, Integer drone_tag, String barcode, Integer quantity) { }
+    void purchaseIngredient(String restaurant_name, String service_name, Integer drone_tag, String barcode, Integer quantity) {
+        if (!restaurants.containsKey(restaurant_name)) {
+            System.out.println("ERROR:restaurant_does_not_exist");
+        } else if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else if (!ingredientInfos.containsKey(barcode)) {
+            System.out.println("ERROR:ingredient_does_not_exist");
+        } else if (quantity <= 0) {
+            System.out.println("ERROR:must_purchase_positive_quantity");
+        } else {
+            try {
+                restaurants.get(restaurant_name).purchasePackage(deliveryServices.get(service_name), drone_tag, barcode, quantity);
+                System.out.println("OK:change_completed");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
     public void commandLoop() {
         Scanner commandLineInput = new Scanner(System.in);

@@ -50,8 +50,9 @@ public class Package {
         setQuantity(addedQuantity + quantity);
     }
 
-    public void unloadPackage(int subtractedQuantity) {
-        setQuantity(subtractedQuantity + quantity);
+    public int unloadPackage(int subtractedQuantity) {
+        setQuantity(quantity - subtractedQuantity);
+        return subtractedQuantity * unit_price;
     }
 
     public String toString() {

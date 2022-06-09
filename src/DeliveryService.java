@@ -77,8 +77,6 @@ public class DeliveryService {
                 throw new Exception("ERROR:drone_not_located_at_home_base");
             } else if (petrol < 0) {
                 throw new Exception("ERROR:fuel_cannot_be_negative");
-            } else if (petrol > drone.getFuelMax() - drone.getFuel()) {
-                throw new Exception("ERROR:too_much_fuel_for_drone");
             }
             drone.addFuel(petrol);
         }
@@ -91,7 +89,7 @@ public class DeliveryService {
             Drone drone = drones.get(droneID);
             if (drone.getCurrCapacity() - quantity < 0) {
                 throw new Exception("ERROR:drone_does_not_have_enough_space_for_ingredient");
-            } else if (drone.getCurrLocation().equals(location)) {
+            } else if (!drone.getCurrLocation().equals(location)) {
                 throw new Exception("ERROR:drone_not_located_at_home_base");
             }
             Package packageToAdd = new Package(ingredient, unitPrice, quantity);
@@ -118,8 +116,16 @@ public class DeliveryService {
         } 
     }
 
-    public double requestPackage(int droneID, int barcode, int quantity) {
-        return 0;
+    public int requestPackage(Restaurant restaurant, int droneID, String barcode, int quantity) throws Exception {
+        if (!drones.containsKey(droneID)) {
+            throw new Exception("ERROR:drone_does_not_exist");
+        } else {
+            Drone drone = drones.get(droneID);
+            if (!restaurant.getLocation().equals(drone.getCurrLocation())) {
+                throw new Exception("ERROR:drone_not_located_at_restaurant");
+            }
+            return drone.getPackage(barcode, quantity);
+        }
     }
 
     public String toString() {
