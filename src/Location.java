@@ -55,6 +55,10 @@ public class Location {
         currSpots++;
     }
 
+    public boolean equals(Location loc) {
+        return this.x == loc.getXCoord() && this.y == loc.getYCoord() && this.name.equals(loc.getName());
+    }
+
     /**
      * Returns the distance between two locations.
      * @param destination
