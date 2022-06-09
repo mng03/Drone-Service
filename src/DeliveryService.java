@@ -68,8 +68,20 @@ public class DeliveryService {
             }
     }
 
-    public void loadFuel(int droneID, int petrol) {
-
+    public void loadFuel(int droneID, int petrol) throws Exception {
+        if (!drones.containsKey(droneID)) {
+            throw new Exception("ERROR:drone_does_not_exist");
+        } else {
+            Drone drone = drones.get(droneID);
+            if (!drone.getCurrLocation().equals(location)) {
+                throw new Exception("ERROR:drone_not_located_at_home_base");
+            } else if (petrol < 0) {
+                throw new Exception("ERROR:fuel_cannot_be_negative");
+            } else if (petrol > drone.getFuelMax() - drone.getFuel()) {
+                throw new Exception("ERROR:too_much_fuel_for_drone");
+            }
+            drone.addFuel(petrol);
+        }
     }
 
     public void loadPackage(int droneID, IngredientInfo ingredient, int quantity, int unitPrice) throws Exception {
