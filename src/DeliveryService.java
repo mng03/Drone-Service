@@ -1,6 +1,6 @@
 package src;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Map;
 
 /**
@@ -19,7 +19,7 @@ public class DeliveryService {
         this.name = name;
         this.location = location;
         this.revenue = revenue;
-        drones = new HashMap<Integer, Drone>();
+        drones = new TreeMap<Integer, Drone>();
     }
 
     public String getName() {

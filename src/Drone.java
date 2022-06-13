@@ -1,6 +1,6 @@
 package src;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Map;
 
 /**
@@ -25,7 +25,7 @@ public class Drone {
         this.capacity = capacity;
         this.homeBase = location;
 
-        packages = new HashMap<String, Package>();
+        packages = new TreeMap<String, Package>();
         fuel = fuelMax;
         sales = 0;
         currCapacity = capacity;

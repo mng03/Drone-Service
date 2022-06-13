@@ -1,19 +1,19 @@
 package src;
 
 import java.util.Scanner;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class InterfaceLoop {
-    private HashMap<String, Location> locations;
-    private HashMap<String, DeliveryService> deliveryServices;
-    private HashMap<String, Restaurant> restaurants;
-    private HashMap<String, IngredientInfo> ingredientInfos; 
+    private TreeMap<String, Location> locations;
+    private TreeMap<String, DeliveryService> deliveryServices;
+    private TreeMap<String, Restaurant> restaurants;
+    private TreeMap<String, IngredientInfo> ingredientInfos; 
 
     InterfaceLoop() { 
-        locations = new HashMap<String, Location>();
-        deliveryServices = new HashMap<String, DeliveryService>();
-        restaurants = new HashMap<String, Restaurant>();
-        ingredientInfos = new HashMap<String, IngredientInfo>();
+        locations = new TreeMap<String, Location>();
+        deliveryServices = new TreeMap<String, DeliveryService>();
+        restaurants = new TreeMap<String, Restaurant>();
+        ingredientInfos = new TreeMap<String, IngredientInfo>();
     }
 
     void makeIngredient(String init_barcode, String init_name, Integer init_weight) {
