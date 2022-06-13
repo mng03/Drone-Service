@@ -106,7 +106,7 @@ public class DeliveryService {
             int toDestinationDistance = destination.calcDistance(drone.getCurrLocation());
             if (toDestinationDistance > drone.getFuel()) {
                 throw new Exception("ERROR:not_enough_fuel_to_reach_the_destination");
-            } else if (toDestinationDistance + destination.calcDistance(location) > drone.getFuel()) {
+            } else if (toDestinationDistance + destination.calcDistance(location) > drone.getFuel() && !destination.equals(location)) {
                 throw new Exception("ERROR:not_enough_fuel_to_reach_home_base_from_the_destination");
             } else if (destination.getCurrSpots() == 0) {
                 throw new Exception("ERROR:not_enough_space_for_drone_at_destination");
