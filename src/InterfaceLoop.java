@@ -4,40 +4,219 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 public class InterfaceLoop {
+    private TreeMap<String, Location> locations;
+    private TreeMap<String, DeliveryService> deliveryServices;
+    private TreeMap<String, Restaurant> restaurants;
+    private TreeMap<String, IngredientInfo> ingredientInfos; 
 
-    InterfaceLoop() { }
+    InterfaceLoop() { 
+        locations = new TreeMap<String, Location>();
+        deliveryServices = new TreeMap<String, DeliveryService>();
+        restaurants = new TreeMap<String, Restaurant>();
+        ingredientInfos = new TreeMap<String, IngredientInfo>();
+    }
 
-    void makeIngredient(String init_barcode, String init_name, Integer init_weight) { }
+    void makeIngredient(String init_barcode, String init_name, Integer init_weight) {
+        if (init_barcode.equals("")) {
+            System.out.println("ERROR:ingredient_barcode_cannot_be_empty");
+        } else if (ingredientInfos.containsKey(init_barcode)) {
+            System.out.println("ERROR:ingredient_barcode_already_exists");
+        } else if (init_name.equals("")) {
+            System.out.println("ERROR:ingredient_name_cannot_be_empty");
+        } else if (init_weight < 0) {
+            System.out.println("ERROR:ingredient_cannot_have_negative_weight");
+        } else {
+            ingredientInfos.put(init_barcode, new IngredientInfo(init_barcode, init_name, init_weight));
+            System.out.println("OK:change_completed");
+        }
+    }
 
-    void displayIngredients() { }
+    void displayIngredients() {
+        for (IngredientInfo ingredientInfo : ingredientInfos.values()) {
+            System.out.println(ingredientInfo);
+        }
+        System.out.println("OK:display_completed");
+    }
 
-    void makeLocation(String init_name, Integer init_x_coord, Integer init_y_coord, Integer init_space_limit) { }
+    void makeLocation(String init_name, Integer init_x_coord, Integer init_y_coord, Integer init_space_limit) {
+        if(init_name.equals("")) {
+            System.out.println("ERROR:location_name_cannot_be_empty");
+        } else if (locations.containsKey(init_name)) {
+            System.out.println("ERROR:location_name_already_exists");
+        } else if (init_space_limit < 0) {
+            System.out.println("ERROR:location_cannot_have_a_negative_space_limit");
+        } else {
+            locations.put(init_name, new Location(init_name, init_x_coord, init_y_coord, init_space_limit));
+            System.out.println("OK:change_completed");
+        }
+    }
 
-    void displayLocations() { }
+    void displayLocations() {
+        for (Location location : locations.values()) {
+            System.out.println(location);
+        }
+        System.out.println("OK:display_completed");
+    }
 
-    void checkDistance(String departure_point, String arrival_point) { }
+    void checkDistance(String departure_point, String arrival_point) {
+        if (!locations.containsKey(departure_point)) {
+            System.out.println("ERROR:departure_location_does_not_exist");
+        } else if (!locations.containsKey(arrival_point)) {
+            System.out.println("ERROR:arrival_location_does_not_exist");
+        } else {
+            System.out.println("OK:distance = " + locations.get(departure_point).calcDistance(locations.get(arrival_point)));
+        }
+    }
 
-    void makeDeliveryService(String init_name, Integer init_revenue, String located_at) { }
+    void makeDeliveryService(String init_name, Integer init_revenue, String located_at) {
+        if(init_name.equals("")) {
+            System.out.println("ERROR:delivery_service_name_cannot_be_empty");
+        } else if (deliveryServices.containsKey(init_name)) {
+            System.out.println("ERROR:delivery_service_name_already_exists");
+        } else if (!locations.containsKey(located_at)) {
+            System.out.println("ERROR:location_does_not_exist");
+        } else if (init_revenue < 0) {
+            System.out.println("ERROR:revenue_cannot_be_negative");
+        } else {
+            deliveryServices.put(init_name, new DeliveryService(init_name, init_revenue, locations.get(located_at)));
+            System.out.println("OK:change_completed");
+        }
+    }
 
-    void displayServices() { }
+    void displayServices() {
+        for (DeliveryService deliveryService : deliveryServices.values()) {
+            System.out.println(deliveryService);
+        }
+        System.out.println("OK:display_completed");
+    }
 
-    void makeRestaurant(String init_name, String located_at) { }
+    void makeRestaurant(String init_name, String located_at) {
+        if(init_name.equals("")) {
+            System.out.println("ERROR:restaurant_name_cannot_be_empty");
+        } else if (restaurants.containsKey(init_name)) {
+            System.out.println("ERROR:restaurant_name_already_exists");
+        } else if (!locations.containsKey(located_at)) {
+            System.out.println("ERROR:location_does_not_exist");
+        } else {
+            restaurants.put(init_name, new Restaurant(init_name, locations.get(located_at)));
+            System.out.println("OK:change_completed");
+        }
+    }
 
-    void displayRestaurants() { }
+    void displayRestaurants() {
+        for (Restaurant restaurant : restaurants.values()) {
+            System.out.println(restaurant);
+        }
+        System.out.println("OK:display_completed");
+    }
 
-    void makeDrone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel) { }
+    void makeDrone(String service_name, Integer init_tag, Integer init_capacity, Integer init_fuel) {
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else if (init_capacity < 0) {
+            System.out.println("ERROR:drone_capacity_cannot_be_negative");
+        } 
+        else if (init_fuel < 0) {
+            System.out.println("ERROR:drone_fuel_cannot_be_negative");
+        } else {
+            try {
+                deliveryServices.get(service_name).purchaseDrone(init_tag, init_capacity, init_fuel);
+                System.out.println("OK:change_completed");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            
+        }
+    }
 
-    void displayDrones(String service_name) { }
+    void displayDrones(String service_name) {
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else {
+            for (Drone drone : deliveryServices.get(service_name).getDrones().values()) {
+                System.out.println(drone);
+            }
+            System.out.println("OK:display_completed");
+        }
+    }
 
-    void displayAllDrones() { }
+    void displayAllDrones() {
+        for (DeliveryService deliveryService : deliveryServices.values()) {
+            System.out.println("service name [" + deliveryService.getName() + "] drones:");
+            for (Drone drone : deliveryService.getDrones().values()) {
+                System.out.println(drone);
+            }
+        }
+        System.out.println("OK:display_completed");
+    }
 
-    void flyDrone(String service_name, Integer drone_tag, String destination_name) { }
+    void flyDrone(String service_name, Integer drone_tag, String destination_name) {
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else if (!locations.containsKey(destination_name)) {
+            System.out.println("ERROR:location_does_not_exist");
+        } else {
+            try {
+                deliveryServices.get(service_name).flyDrone(drone_tag, locations.get(destination_name));
+                System.out.println("OK:change_completed");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
-    void loadIngredient(String service_name, Integer drone_tag, String barcode, Integer quantity, Integer unit_price) { }
+    void loadIngredient(String service_name, Integer drone_tag, String barcode, Integer quantity, Integer unit_price) {
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else if (!ingredientInfos.containsKey(barcode)) {
+            System.out.println("ERROR:ingredient_does_not_exist");
+        } else if (quantity <= 0) {
+            System.out.println("ERROR:ingredient_must_be_have_a_positive_quantity");
+        } else if (unit_price < 0) {
+            System.out.println("ERROR:unit_price_cannot_be_negative");
+        } else {
+            try {
+                deliveryServices.get(service_name).loadPackage(drone_tag, ingredientInfos.get(barcode), quantity, unit_price);
+                System.out.println("OK:change_completed");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
 
-    void loadFuel(String service_name, Integer drone_tag, Integer petrol) { }
+        }
+    }
 
-    void purchaseIngredient(String restaurant_name, String service_name, Integer drone_tag, String barcode, Integer quantity) { }
+    void loadFuel(String service_name, Integer drone_tag, Integer petrol) {
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else {
+            try {
+                deliveryServices.get(service_name).loadFuel(drone_tag, petrol);
+                System.out.println("OK:change_completed");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        }
+    }
+
+    void purchaseIngredient(String restaurant_name, String service_name, Integer drone_tag, String barcode, Integer quantity) {
+        if (!restaurants.containsKey(restaurant_name)) {
+            System.out.println("ERROR:restaurant_does_not_exist");
+        } else if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else if (!ingredientInfos.containsKey(barcode)) {
+            System.out.println("ERROR:ingredient_does_not_exist");
+        } else if (quantity <= 0) {
+            System.out.println("ERROR:must_purchase_positive_quantity");
+        } else {
+            try {
+                restaurants.get(restaurant_name).purchasePackage(deliveryServices.get(service_name), drone_tag, barcode, quantity);
+                System.out.println("OK:change_completed");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
     public void commandLoop() {
         Scanner commandLineInput = new Scanner(System.in);

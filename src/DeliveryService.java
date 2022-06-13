@@ -1,7 +1,6 @@
 package src;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.TreeMap;
 import java.util.Map;
 
 /**
@@ -11,26 +10,16 @@ import java.util.Map;
  * @version 1.0
  */
 public class DeliveryService {
-    private int id;
     private String name;
-    private double revenue;
+    private int revenue;
     private Location location;
     private Map<Integer, Drone> drones;
 
-    public DeliveryService(int id, String name, Location location) {
-        this.id = id;
+    public DeliveryService(String name, int revenue, Location location) {
         this.name = name;
         this.location = location;
-        revenue = 0;
-        drones = new HashMap<Integer, Drone>();
-    }
-
-    public DeliveryService(int id, String name, int x, int y, int spaceLimit, int currCapacity) {
-        this(id, name, new Location(x, y, spaceLimit, currCapacity));
-    }
-
-    public int getID() {
-        return id;
+        this.revenue = revenue;
+        drones = new TreeMap<Integer, Drone>();
     }
 
     public String getName() {
@@ -49,10 +38,6 @@ public class DeliveryService {
         return drones;
     }
 
-    public void setID(int id) {
-        this.id = id;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -61,7 +46,7 @@ public class DeliveryService {
         this.location = location;
     }
 
-    public void setRevenue(double revenue) {
+    public void setRevenue(int revenue) {
         this.revenue = revenue;
     }
 
@@ -73,28 +58,77 @@ public class DeliveryService {
         drones.remove(drone.getUniqueID());
     }
 
-    public void purchaseDrone(int droneID, int capacity, int fuelMax) {
-        drones.put(droneID, new Drone(droneID, capacity, fuelMax, this));
+    public void purchaseDrone(int droneID, int capacity, int fuelMax) throws Exception {
+            if (location.getCurrSpots() == 0) {
+                throw new Exception("ERROR:not_enough_space_to_create_new_drone");
+            } else if (drones.containsKey(droneID)) {
+                throw new Exception("ERROR:drone_with_tag_already_exists_in_service");
+            } else {
+                drones.put(droneID, new Drone(droneID, capacity, fuelMax, location));
+            }
     }
 
-    public void loadFuel(int droneID, int petrol) {
+    public void loadFuel(int droneID, int petrol) throws Exception {
+        if (!drones.containsKey(droneID)) {
+            throw new Exception("ERROR:drone_does_not_exist");
+        } else {
+            Drone drone = drones.get(droneID);
+            if (!drone.getCurrLocation().equals(location)) {
+                throw new Exception("ERROR:drone_not_located_at_home_base");
+            } else if (petrol < 0) {
+                throw new Exception("ERROR:fuel_cannot_be_negative");
+            }
+            drone.addFuel(petrol);
+        }
+    }
+
+    public void loadPackage(int droneID, IngredientInfo ingredient, int quantity, int unitPrice) throws Exception {
+        if (!drones.containsKey(droneID)) {
+            throw new Exception("ERROR:drone_does_not_exist");
+        } else {
+            Drone drone = drones.get(droneID);
+            if (drone.getCurrCapacity() - quantity < 0) {
+                throw new Exception("ERROR:drone_does_not_have_enough_space_for_ingredient");
+            } else if (!drone.getCurrLocation().equals(location)) {
+                throw new Exception("ERROR:drone_not_located_at_home_base");
+            }
+            Package packageToAdd = new Package(ingredient, unitPrice, quantity);
+            drone.loadPackage(packageToAdd);
+        }
 
     }
 
-    public void loadPackage(int droneID, Ingredient ingredient, int quantity, double unitPrice) {
-
+    public void flyDrone(int droneID, Location destination) throws Exception {
+        if (!drones.containsKey(droneID)) {
+            throw new Exception("ERROR:drone_does_not_exist");
+        } else {
+            Drone drone = drones.get(droneID);
+            int toDestinationDistance = destination.calcDistance(drone.getCurrLocation());
+            if (toDestinationDistance > drone.getFuel()) {
+                throw new Exception("ERROR:not_enough_fuel_to_reach_the_destination");
+            } else if (toDestinationDistance + destination.calcDistance(location) > drone.getFuel() && !destination.equals(location)) {
+                throw new Exception("ERROR:not_enough_fuel_to_reach_home_base_from_the_destination");
+            } else if (destination.getCurrSpots() == 0) {
+                throw new Exception("ERROR:not_enough_space_for_drone_at_destination");
+            } else {
+                drone.fly(destination);
+            }
+        } 
     }
 
-    public void flyDrone(int droneID, Location destination) {
-
-    }
-
-    public double requestPackage(int droneID, int barcode, int quantity) {
-        return 0;
+    public int requestPackage(Restaurant restaurant, int droneID, String barcode, int quantity) throws Exception {
+        if (!drones.containsKey(droneID)) {
+            throw new Exception("ERROR:drone_does_not_exist");
+        } else {
+            Drone drone = drones.get(droneID);
+            if (!restaurant.getLocation().equals(drone.getCurrLocation())) {
+                throw new Exception("ERROR:drone_not_located_at_restaurant");
+            }
+            return drone.getPackage(barcode, quantity);
+        }
     }
 
     public String toString() {
-        return "Delivery Service: " + name + ", ID: " + id + " has made $" + revenue
-                + " in revenue and is located at: " + location;
+        return "name: " + name + ", revenue: $" + revenue + ", location: " + location.getName();
     }
 }

@@ -6,18 +6,18 @@ package src;
  * @author Group 9
  * @version 1.0
  */
-public class Ingredient {
-    private int barcode;
+public class IngredientInfo {
+    private String barcode;
     private String name;
     private int unitWeight;
 
-    public Ingredient(int barcode, String name, int unitWeight) {
+    public IngredientInfo(String barcode, String name, int unitWeight) {
         this.barcode = barcode;
         this.name = name;
         this.unitWeight = unitWeight;
     }
 
-    public int getBarcode() {
+    public String getBarcode() {
         return barcode;
     }
 
@@ -29,7 +29,7 @@ public class Ingredient {
         return unitWeight;
     }
 
-    public void setBarcode(int bc) {
+    public void setBarcode(String bc) {
         barcode = bc;
     }
 
@@ -42,6 +42,6 @@ public class Ingredient {
     }
 
     public String toString() {
-        return "Barcode: " + barcode + " Ingredient name: " + name + " Unit Weight: " + unitWeight;
+        return "barcode: " + barcode + ", name: " + name + ", unit_weight: " + unitWeight;
     }
 }

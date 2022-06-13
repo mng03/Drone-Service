@@ -8,17 +8,13 @@ package src;
  */
 public class Restaurant {
     private String name;
-    private double moneySpent;
+    private int moneySpent;
     private Location location;
 
     public Restaurant(String name, Location location) {
         this.name = name;
         this.location = location;
         moneySpent = 0;
-    }
-
-    public Restaurant(String name, int x, int y, int spaceLimit, int currCapacity) {
-        this(name, new Location(x, y, spaceLimit, currCapacity));
     }
 
     public String getName() {
@@ -37,7 +33,7 @@ public class Restaurant {
         name = n;
     }
 
-    public void setMoneySpent(double ms) {
+    public void setMoneySpent(int ms) {
         moneySpent = ms;
     }
 
@@ -45,15 +41,15 @@ public class Restaurant {
         location = loc;
     }
 
-    public void incrementMoneySpent(double moreMoney) {
+    public void incrementMoneySpent(int moreMoney) {
         setMoneySpent(moreMoney + moneySpent);
     }
 
-    public void purchasePackage(DeliveryService service, int droneID, int barcode, int quantity) {
-        moneySpent += service.requestPackage(droneID, barcode, quantity);
+    public void purchasePackage(DeliveryService service, int droneID, String barcode, int quantity) throws Exception {
+        moneySpent += service.requestPackage(this, droneID, barcode, quantity);
     }
 
     public String toString() {
-        return "Restaurant: " + name + " has spent: $" + moneySpent;
+        return "name: " + name + ", money_spent: $" + moneySpent +", location: " + location.getName();
     }
 }
