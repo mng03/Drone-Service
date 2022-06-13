@@ -11,7 +11,6 @@ import java.util.Map;
  */
 public class Drone {
     private int uniqueID;
-    private int fuelMax;
     private int capacity;
     private Location homeBase;
 
@@ -24,7 +23,6 @@ public class Drone {
     public Drone(int uniqueID, int capacity, int fuelMax, Location location) {
         this.uniqueID = uniqueID;
         this.capacity = capacity;
-        this.fuelMax = fuelMax;
         this.homeBase = location;
 
         packages = new HashMap<String, Package>();
@@ -37,10 +35,6 @@ public class Drone {
 
     public int getUniqueID() {
         return uniqueID;
-    }
-
-    public int getFuelMax() {
-        return fuelMax;
     }
 
     public int getCapacity() {
@@ -76,10 +70,7 @@ public class Drone {
     }
 
     public void addFuel(int petrol) {
-        fuel += petrol;/**
-        if (fuel > fuelMax) {
-            fuel = fuelMax;
-        }**/
+        fuel += petrol;
     }
 
     public void loadPackage(Package packageToAdd) {
