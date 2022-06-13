@@ -76,10 +76,10 @@ public class Drone {
     }
 
     public void addFuel(int petrol) {
-        fuel += petrol;
+        fuel += petrol;/**
         if (fuel > fuelMax) {
             fuel = fuelMax;
-        }
+        }**/
     }
 
     public void loadPackage(Package packageToAdd) {
