@@ -42,16 +42,12 @@ public class Package {
         return quantity;
     }
 
-    public void setQuantity(int q) {
-        quantity = q;
-    }
-
     public void addToPackage(int addedQuantity) {
-        setQuantity(addedQuantity + quantity);
+        quantity = addedQuantity + quantity;
     }
 
     public int unloadPackage(int subtractedQuantity) {
-        setQuantity(quantity - subtractedQuantity);
+        quantity = quantity - subtractedQuantity;
         return subtractedQuantity * unit_price;
     }
 
