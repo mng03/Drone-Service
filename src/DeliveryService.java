@@ -171,7 +171,7 @@ public class DeliveryService {
             throw new Exception("ERROR:employee_does_not_have_a_valid_pilot's_license");
         }
         if (!drones.containsKey(droneTag)) {
-            throw new Exception("ERROR:drone_does_not_exist_with_this_delivery_service");
+            throw new Exception("ERROR:drone_does_not_exist");
         }
         ((Pilot) person).pilotDrone(drones.get(droneTag));
     }

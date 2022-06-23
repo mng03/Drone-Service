@@ -19,6 +19,7 @@ public class Drone {
     private int sales;
     private int currCapacity;
     private Location currLocation;
+    private Pilot pilot;
 
     public Drone(int uniqueID, int capacity, int fuelMax, Location location) {
         this.uniqueID = uniqueID;
@@ -31,6 +32,7 @@ public class Drone {
         currCapacity = capacity;
         currLocation = location;
         homeBase.addDrone();
+        pilot = null;
     }
 
     public int getUniqueID() {
@@ -106,6 +108,13 @@ public class Drone {
             currCapacity += quantity;
             return saleAmount;
         }
+    }
+
+    public void setPilot(Pilot pilot) {
+        if (this.pilot != null) {
+            this.pilot.stopPilotingDrone();
+        }
+        this.pilot = pilot;
     }
 
     public String toString() {

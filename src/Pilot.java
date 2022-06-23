@@ -3,31 +3,31 @@ package src;
 public class Pilot extends Person {
     private String license;
     private int experience;
-    private Drone pilots;
+    private Drone pilotedDrone;
 
     public Pilot(Person person, String license, int experience) {
         super(person);
         this.license = license;
         this.experience = experience;
-        pilots = null;
+        pilotedDrone = null;
     }
 
     public void workFor(DeliveryService service) throws Exception {
-        if (pilots != null) {
+        if (pilotedDrone != null) {
             throw new Exception("ERROR:employee_is_piloting_for_another_company");
         }
         super.workFor(service);
     }
 
     public void leave(DeliveryService service) throws Exception {
-        if (pilots != null) {
+        if (pilotedDrone != null) {
             throw new Exception("ERROR:employee_is_piloting_a_drone");
         }
         super.leave(service);
     }
 
     public void becomeManager(DeliveryService service) throws Exception {
-        if (pilots != null) {
+        if (pilotedDrone != null) {
             throw new Exception("ERROR:employee_is_busy_piloting_a_drone");
         }
         super.becomeManager(service);
@@ -40,19 +40,19 @@ public class Pilot extends Person {
         if (workingFor.size() != 1) {
             throw new Exception("ERROR:employee_is_working_at_other_companies");
         }
-        if (pilots != null) {
+        if (pilotedDrone != null) {
             stopPilotingDrone();
         }
-        pilots = drone;
+        pilotedDrone = drone;
+        pilotedDrone.setPilot(this);
     }
 
     public void stopPilotingDrone() {
-        pilots.removePilot();
-        pilots = null;
+        pilotedDrone = null;
     }
 
     public String toString() {
         return super.toString() + "\nuser has a pilot's license (" + license + ") with " + experience + " successful flight(s)"
-                + (pilots == null ? "" : "\nemployee is flying these drones: [ drone tags | " + pilots.getUniqueID() + " ]");
+                + (pilotedDrone == null ? "" : "\nemployee is flying these drones: [ drone tags | " + pilotedDrone.getUniqueID() + " ]");
     }
 }
