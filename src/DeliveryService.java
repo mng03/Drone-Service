@@ -153,13 +153,27 @@ public class DeliveryService {
         manager = person;
     }
 
-    public void makePilot(Person person, String license, int experience) throws Exception {
+    public Pilot train(Person person, String license, int experience) throws Exception {
         if (!employees.containsKey(person.getUsername())) {
             throw new Exception("ERROR:employee_does_not_work_for_this_service");
         }
         Pilot newPilot = person.becomePilot(license, experience);
         employees.remove(person.getUsername());
         employees.put(newPilot.getUsername(), newPilot);
+        return newPilot;
+    }
+
+    public void assignDronePilot(Person person, int droneTag) throws Exception {
+        if (!employees.containsKey(person.getUsername())) {
+            throw new Exception("ERROR:employee_does_not_work_for_this_service");
+        }
+        if (!(person instanceof Pilot)) {
+            throw new Exception("ERROR:employee_does_not_have_a_valid_pilot's_license");
+        }
+        if (!drones.containsKey(droneTag)) {
+            throw new Exception("ERROR:drone_does_not_exist_with_this_delivery_service");
+        }
+        ((Pilot) person).pilotDrone(drones.get(droneTag));
     }
 
     public String toString() {
