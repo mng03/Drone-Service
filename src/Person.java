@@ -23,7 +23,10 @@ public class Person {
     }
 
     public void workFor(DeliveryService service) throws Exception {
-
+        if (manages != null) {
+            throw new Exception("ERROR:employee_is_managing_another_service");
+        }
+        workingFor.add(service);
     }
 
     public void leave(DeliveryService service) throws Exception {
