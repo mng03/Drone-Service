@@ -55,6 +55,16 @@ public class Person {
     }
 
     public String toString() {
-
+        String workingAt = "";
+        if (manages != null) {
+            workingAt = "\nemployee is managing: " + manages;
+        } else {
+            workingAt += "\nemployee is working at: ";
+            for (DeliveryService service : workingFor) {
+                workingAt += "\n&> " + service.getName();
+            }
+        }
+        return "userID: " + username + ", name: " + fname + " " + lname + ", birth date: " + bdate
+                + ", address: " + address + workingAt;
     }
 }
