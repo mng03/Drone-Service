@@ -21,6 +21,7 @@ public class Pilot extends Person {
     }
 
     public String toString() {
-        
+        return super.toString() + "\nuser has a pilot's license (" + license + ") with " + experience + " successful flight(s)"
+                + (pilots == null ? "" : "\nemployee is flying these drones: [ drone tags | " + pilots.getUniqueID() + " ]");
     }
 }
