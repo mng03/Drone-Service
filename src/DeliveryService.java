@@ -137,6 +137,11 @@ public class DeliveryService {
         employees.put(person.getUsername(), person);
     }
 
+    public void fire(Person person) throws Exception {
+        person.leave(this);
+        employees.remove(person.getUsername());
+    }
+
     public String toString() {
         return "name: " + name + ", revenue: $" + revenue + ", location: " + location.getName();
     }
