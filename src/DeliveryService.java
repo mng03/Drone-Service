@@ -153,6 +153,15 @@ public class DeliveryService {
         manager = person;
     }
 
+    public void makePilot(Person person, String license, int experience) throws Exception {
+        if (!employees.containsKey(person.getUsername())) {
+            throw new Exception("ERROR:employee_does_not_work_for_this_service");
+        }
+        Pilot newPilot = person.becomePilot(license, experience);
+        employees.remove(person.getUsername());
+        employees.put(newPilot.getUsername(), newPilot);
+    }
+
     public String toString() {
         return "name: " + name + ", revenue: $" + revenue + ", location: " + location.getName();
     }
