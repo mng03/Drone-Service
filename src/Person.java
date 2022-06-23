@@ -37,7 +37,14 @@ public class Person {
     }
 
     public void becomeManager(DeliveryService service) throws Exception {
+        if (workingFor.size() != 1) {
+            throw new Exception("ERROR:employee_is_working_at_other_companies");
+        }
+        manages = service;
+    }
 
+    public void stopManaging() {
+        manages = null;
     }
 
     public Pilot becomePilot(String license, int experience) throws Exception {
