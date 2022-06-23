@@ -20,6 +20,8 @@ public class Drone {
     private int currCapacity;
     private Location currLocation;
     private Pilot pilot;
+    private Drone leader;
+    private TreeMap<Integer, Drone> followers;
 
     public Drone(int uniqueID, int capacity, int fuelMax, Location location) {
         this.uniqueID = uniqueID;
@@ -33,6 +35,8 @@ public class Drone {
         currLocation = location;
         homeBase.addDrone();
         pilot = null;
+        leader = null;
+        followers = new TreeMap<Integer, Drone>();
     }
 
     public int getUniqueID() {
@@ -115,6 +119,20 @@ public class Drone {
             this.pilot.stopPilotingDrone();
         }
         this.pilot = pilot;
+    }
+
+    public void swarm(Drone leader) throws Exception {
+        if (followers.size() > 0) {
+            throw new Exception("ERROR:this_drone_is_leading_a_swarm_already");
+        }
+        if (this.pilot != null) {
+            this.pilot.stopPilotingDrone();
+        }
+        if (this.leader != null) {
+            leader.removeSwarmDrone(this);
+        }
+        this.leader = leader;
+        leader.addSwarmDrone(this);
     }
 
     public String toString() {
