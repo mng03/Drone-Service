@@ -14,12 +14,16 @@ public class DeliveryService {
     private int revenue;
     private Location location;
     private Map<Integer, Drone> drones;
+    private TreeMap<String, Person> employees;
+    private Person manager;
 
     public DeliveryService(String name, int revenue, Location location) {
         this.name = name;
         this.location = location;
         this.revenue = revenue;
         drones = new TreeMap<Integer, Drone>();
+        employees = new TreeMap<String, Person>();
+        manager = null;
     }
 
     public String getName() {
@@ -126,6 +130,11 @@ public class DeliveryService {
             }
             return drone.getPackage(barcode, quantity);
         }
+    }
+
+    public void hire(Person person) throws Exception {
+        person.workFor(this);
+        employees.put(person.getUsername(), person);
     }
 
     public String toString() {
