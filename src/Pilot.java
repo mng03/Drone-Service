@@ -12,6 +12,27 @@ public class Pilot extends Person {
         pilots = null;
     }
 
+    public void workFor(DeliveryService service) throws Exception {
+        if (pilots != null) {
+            throw new Exception("ERROR:employee_is_piloting_for_another_company");
+        }
+        super.workFor(service);
+    }
+
+    public void leave(DeliveryService service) throws Exception {
+        if (pilots != null) {
+            throw new Exception("ERROR:employee_is_piloting_a_drone");
+        }
+        super.leave(service);
+    }
+
+    public void becomeManager(DeliveryService service) throws Exception {
+        if (pilots != null) {
+            throw new Exception("ERROR:employee_is_busy_piloting_a_drone");
+        }
+        super.becomeManager(service);
+    }
+
     public void pilotDrone(Drone drone) throws Exception {
         if (manages != null) {
             throw new Exception("ERROR:employee_is_too_busy_managing");
