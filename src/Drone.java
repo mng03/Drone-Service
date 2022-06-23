@@ -129,10 +129,15 @@ public class Drone {
             this.pilot.stopPilotingDrone();
         }
         if (this.leader != null) {
-            leader.removeSwarmDrone(this);
+            this.leader.removeSwarmDrone(this);
         }
         this.leader = leader;
         leader.addSwarmDrone(this);
+    }
+
+    public void leaveSwarm() {
+        leader.removeSwarmDrone(this);
+        setPilot(leader.pilot);
     }
 
     public String toString() {
