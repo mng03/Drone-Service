@@ -125,6 +125,9 @@ public class Drone {
         if (followers.size() > 0) {
             throw new Exception("ERROR:this_drone_is_leading_a_swarm_already");
         }
+        if (leader.pilot == null) {
+            throw new Exception("ERROR:lead_drone_must_have_a_pilot");
+        }
         if (this.pilot != null) {
             this.pilot.stopPilotingDrone();
         }
@@ -138,6 +141,14 @@ public class Drone {
     public void leaveSwarm() {
         leader.removeSwarmDrone(this);
         setPilot(leader.pilot);
+    }
+
+    public void addSwarmDrone(Drone follower) {
+        followers.put(follower.getUniqueID(), follower);
+    }
+
+    public void removeSwarmDrone(Drone follower) {
+        followers.remove(follower.getUniqueID());
     }
 
     public String toString() {
