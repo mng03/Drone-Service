@@ -30,7 +30,10 @@ public class Person {
     }
 
     public void leave(DeliveryService service) throws Exception {
-
+        if (manages != null) {
+            throw new Exception("ERROR:employee_is_managing_a_service");
+        }
+        workingFor.remove(service);
     }
 
     public void becomeManager(DeliveryService service) throws Exception {
