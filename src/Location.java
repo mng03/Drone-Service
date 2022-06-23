@@ -65,6 +65,9 @@ public class Location {
      * @return
      */
     public int calcDistance(Location destination) {
+        if (this.equals(destination)) {
+            return 0;
+        }
         return 1 + (int) Math.floor(Math.sqrt(Math.pow(getXCoord() - destination.getXCoord(), 2)
             + Math.pow(getYCoord() - destination.getYCoord(), 2)));
     }

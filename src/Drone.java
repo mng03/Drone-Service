@@ -93,7 +93,32 @@ public class Drone {
         currCapacity -= packageToAdd.getQuantity();
     }
 
-    public void fly(Location destination) {
+    public void fly(Location destination) throws Exception {
+        if (leader != null) {
+            throw new Exception("ERROR:cannot_control_swarm_drone");
+        } else if (pilot == null) {
+            throw new Exception("ERROR:drone_does_not_have_pilot");
+        } else if (destination.calcDistance(currLocation) > fuel) {
+            throw new Exception("ERROR:not_enough_fuel_to_reach_the_destination");
+        } else if (destination.calcDistance(currLocation) + destination.calcDistance(homeBase) > fuel) {
+            throw new Exception("ERROR:not_enough_fuel_to_reach_home_base_from_the_destination");
+        } else if (destination.getCurrSpots() < followers.size() + 1) {
+            throw new Exception("ERROR:not_enough_space_to_maneuver_the_swarm_to_that_location");
+        } else {
+            for (Drone d : followers.values()) {
+                if (destination.calcDistance(currLocation) + destination.calcDistance(homeBase) > d.getFuel()) {
+                    throw new Exception("ERROR:one_or_more_swarm_drones_do_not_have_enough_fuel");
+                }
+            }
+        }
+        move(destination);
+        for (Drone d : followers.values()) {
+            d.move(destination);
+        }
+        pilot.addExperience();
+    }
+
+    public void move(Location destination) {
         fuel -= currLocation.calcDistance(destination);
         currLocation.removeDrone();
         currLocation = destination;
@@ -122,6 +147,10 @@ public class Drone {
         if (this.pilot != null) {
             this.pilot.stopPilotingDrone();
         }
+        if (leader != null) {
+            leader.removeSwarmDrone(this);
+            leader = null;
+        }
         this.pilot = pilot;
     }
 
@@ -134,6 +163,7 @@ public class Drone {
         }
         if (this.pilot != null) {
             this.pilot.stopPilotingDrone();
+            pilot = null;
         }
         if (this.leader != null) {
             this.leader.removeSwarmDrone(this);
@@ -144,6 +174,7 @@ public class Drone {
 
     public void leaveSwarm() {
         leader.removeSwarmDrone(this);
+        leader = null;
         setPilot(leader.pilot);
     }
 
