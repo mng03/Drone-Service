@@ -154,6 +154,16 @@ public class Drone {
     public String toString() {
         String text = "tag: " + uniqueID + ", capacity: " + capacity + ", remaining_cap: " + currCapacity +
         ", fuel: " + fuel + ", sales: $" + sales + ", location: " + currLocation.getName();
+        if (pilot != null) {
+            text += "\n&> pilot: " + pilot.getUsername();
+            if (followers.size() > 0) {
+                text += "\ndrone is directing this swarm: [ drone tags ";
+                for (Drone d : followers.values()) {
+                    text += "| " + d.getUniqueID();
+                }
+                text += " ]";
+            }
+        }
         for (Package pck : packages.values()) {
             text += "\n" + pck;
         }
