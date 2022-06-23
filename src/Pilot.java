@@ -12,12 +12,13 @@ public class Pilot extends Person {
         pilots = null;
     }
 
-    public void pilotDrone() {
-
+    public void pilotDrone(Drone drone) throws Exception {
+        
     }
 
     public void stopPilotingDrone() {
-
+        pilots.removePilot();
+        pilots = null;
     }
 
     public String toString() {

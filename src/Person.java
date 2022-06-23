@@ -27,6 +27,10 @@ public class Person {
         this(person.username, person.fname, person.lname, person.bdate.getYear(), person.bdate.getMonthValue(), person.bdate.getDayOfMonth(), person.address);
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void workFor(DeliveryService service) throws Exception {
         if (manages != null) {
             throw new Exception("ERROR:employee_is_managing_another_service");
