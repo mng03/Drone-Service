@@ -73,6 +73,8 @@ public class Drone {
         return currLocation;
     }
 
+    public Pilot getPilot() { return pilot; }
+
     public void setFuel(int newFuel) {
         fuel = newFuel;
     }

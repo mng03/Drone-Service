@@ -16,6 +16,7 @@ public class DeliveryService {
     private Map<Integer, Drone> drones;
     private TreeMap<String, Person> employees;
     private Person manager;
+    private int workerCount;
 
     public DeliveryService(String name, int revenue, Location location) {
         this.name = name;
@@ -24,6 +25,7 @@ public class DeliveryService {
         drones = new TreeMap<Integer, Drone>();
         employees = new TreeMap<String, Person>();
         manager = null;
+        workerCount = 0;
     }
 
     public String getName() {
@@ -135,11 +137,13 @@ public class DeliveryService {
     public void hire(Person person) throws Exception {
         person.workFor(this);
         employees.put(person.getUsername(), person);
+        workerCount++;
     }
 
     public void fire(Person person) throws Exception {
         person.leave(this);
         employees.remove(person.getUsername());
+        workerCount--;
     }
 
     public void makeManager(Person person) throws Exception {
@@ -149,8 +153,10 @@ public class DeliveryService {
         person.becomeManager(this);
         if (manager != null) {
             manager.stopManaging();
+            workerCount++;
         }
         manager = person;
+        workerCount--;
     }
 
     public Pilot train(Person person, String license, int experience) throws Exception {
@@ -173,7 +179,11 @@ public class DeliveryService {
         if (!drones.containsKey(droneTag)) {
             throw new Exception("ERROR:drone_does_not_exist");
         }
+        if(drones.get(droneTag).getPilot() != null) {
+            workerCount++;
+        }
         ((Pilot) person).pilotDrone(drones.get(droneTag));
+        workerCount--;
     }
 
     public void getMoney() {
