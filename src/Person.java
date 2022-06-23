@@ -48,7 +48,10 @@ public class Person {
     }
 
     public Pilot becomePilot(String license, int experience) throws Exception {
-
+        if (manages != null) {
+            throw new Exception("ERROR:employee_is_too_busy_managing");
+        }
+        return new Pilot(this, license, experience);
     }
 
     public String toString() {
