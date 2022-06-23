@@ -77,6 +77,8 @@ public class DeliveryService {
     public void loadFuel(int droneID, int petrol) throws Exception {
         if (!drones.containsKey(droneID)) {
             throw new Exception("ERROR:drone_does_not_exist");
+        } else if (workerCount < 1) {
+            throw new Exception("ERROR:not_enough_workers_to_complete_task");
         } else {
             Drone drone = drones.get(droneID);
             if (!drone.getCurrLocation().equals(location)) {
@@ -91,6 +93,8 @@ public class DeliveryService {
     public void loadPackage(int droneID, IngredientInfo ingredient, int quantity, int unitPrice) throws Exception {
         if (!drones.containsKey(droneID)) {
             throw new Exception("ERROR:drone_does_not_exist");
+        } else if (workerCount < 1) {
+            throw new Exception("ERROR:not_enough_workers_to_complete_task");
         } else {
             Drone drone = drones.get(droneID);
             if (drone.getCurrCapacity() - quantity < 0) {
