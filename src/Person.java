@@ -1,5 +1,6 @@
 package src;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.TreeSet;
 
@@ -7,7 +8,7 @@ public class Person {
     private String username;
     private String fname;
     private String lname;
-    private Date bdate;
+    private LocalDate bdate;
     private String address;
     private TreeSet<DeliveryService> workingFor;
     private DeliveryService manages;
@@ -16,10 +17,14 @@ public class Person {
         this.username = username;
         this.fname = fname;
         this.lname = lname;
-        this.bdate = new Date(year, month, date);
+        this.bdate = LocalDate.of(year, month, date);
         this.address = address;
         workingFor = new TreeSet<DeliveryService>();
         manages = null;
+    }
+
+    public Person(Person person) {
+        this(person.username, person.fname, person.lname, person.bdate.getYear(), person.bdate.getMonthValue(), person.bdate.getDayOfMonth(), person.address);
     }
 
     public void workFor(DeliveryService service) throws Exception {
