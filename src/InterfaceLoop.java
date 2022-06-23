@@ -218,6 +218,26 @@ public class InterfaceLoop {
         }
     }
 
+    void makePerson(String init_username, String init_fname, String init_lname, Integer init_year, Integer init_month, Integer init_date, String init_address) { }
+
+    void displayPersons() { }
+
+    void hireWorker(String service_name, String user_name) { }
+
+    void fireWorker(String service_name, String user_name) { }
+
+    void appointManager(String service_name, String user_name) { }
+
+    void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) { }
+
+    void appointPilot(String service_name, String user_name, Integer drone_tag) { }
+
+    void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) { }
+
+    void leaveSwarm(String service_name, Integer swarm_drone_tag) { }
+
+    void collectRevenue(String service_name) { }
+
     public void commandLoop() {
         Scanner commandLineInput = new Scanner(System.in);
         String wholeInputLine;
