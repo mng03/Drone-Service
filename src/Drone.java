@@ -148,7 +148,7 @@ public class Drone {
             this.pilot.stopPilotingDrone();
         }
         if (leader != null) {
-            leader.removeSwarmDrone(this);
+            leader.removeFromSwarm(this);
             leader = null;
         }
         this.pilot = pilot;
@@ -166,23 +166,26 @@ public class Drone {
             pilot = null;
         }
         if (this.leader != null) {
-            this.leader.removeSwarmDrone(this);
+            this.leader.removeFromSwarm(this);
         }
         this.leader = leader;
-        leader.addSwarmDrone(this);
+        leader.addToSwarm(this);
     }
 
-    public void leaveSwarm() {
-        leader.removeSwarmDrone(this);
-        leader = null;
+    public void leaveSwarm() throws Exception {
+        if (leader == null) {
+            throw new Exception("ERROR:drone_is_not_following_another_drone");
+        }
+        leader.removeFromSwarm(this);
         setPilot(leader.pilot);
+        leader = null;
     }
 
-    public void addSwarmDrone(Drone follower) {
+    public void addToSwarm(Drone follower) {
         followers.put(follower.getUniqueID(), follower);
     }
 
-    public void removeSwarmDrone(Drone follower) {
+    public void removeFromSwarm(Drone follower) {
         followers.remove(follower.getUniqueID());
     }
 

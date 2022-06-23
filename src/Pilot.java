@@ -40,9 +40,6 @@ public class Pilot extends Person {
         if (workingFor.size() != 1) {
             throw new Exception("ERROR:employee_is_working_at_other_companies");
         }
-        if (pilotedDrone != null) {
-            stopPilotingDrone();
-        }
         pilotedDrone = drone;
         pilotedDrone.setPilot(this);
     }

@@ -167,6 +167,9 @@ public class DeliveryService {
         if (!employees.containsKey(person.getUsername())) {
             throw new Exception("ERROR:employee_does_not_work_for_this_service");
         }
+        if (manager == null) {
+            throw new Exception("ERROR:delivery_service_does_not_have_valid_manager");
+        }
         Pilot newPilot = person.becomePilot(license, experience);
         employees.remove(person.getUsername());
         employees.put(newPilot.getUsername(), newPilot);
@@ -184,13 +187,35 @@ public class DeliveryService {
             throw new Exception("ERROR:drone_does_not_exist");
         }
         if(drones.get(droneTag).getPilot() != null) {
+            ((Pilot) person).pilotDrone(drones.get(droneTag));
             workerCount++;
+        } else {
+            ((Pilot) person).pilotDrone(drones.get(droneTag));
         }
-        ((Pilot) person).pilotDrone(drones.get(droneTag));
         workerCount--;
     }
 
-    public void getMoney() {
+    public void addSwarmDrone(int leadDroneTag, int swarmDroneTag) throws Exception {
+        if (!drones.containsKey(leadDroneTag) || !drones.containsKey(swarmDroneTag)) {
+            throw new Exception("ERROR:drone_does_not_exist");
+        }
+        if (leadDroneTag == swarmDroneTag) {
+            throw new Exception("ERROR:a_drone_cannot_follow_itself");
+        }
+        drones.get(swarmDroneTag).swarm(drones.get(leadDroneTag));
+    }
+
+    public void removeSwarmDrone(int droneTag) throws Exception {
+        if (!drones.containsKey(droneTag)) {
+            throw new Exception("ERROR:drone_does_not_exist");
+        }
+        drones.get(droneTag).leaveSwarm();
+    }
+
+    public void getMoney() throws Exception {
+        if (manager == null) {
+            throw new Exception("ERROR:delivery_service_does_not_have_valid_manager");
+        }
         for (Drone d : drones.values()) {
             revenue += d.getSales();
             d.resetSales();
