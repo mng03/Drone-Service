@@ -13,7 +13,16 @@ public class Pilot extends Person {
     }
 
     public void pilotDrone(Drone drone) throws Exception {
-        
+        if (manages != null) {
+            throw new Exception("ERROR:employee_is_too_busy_managing");
+        }
+        if (workingFor.size() != 1) {
+            throw new Exception("ERROR:employee_is_working_at_other_companies");
+        }
+        if (pilots != null) {
+            stopPilotingDrone();
+        }
+        pilots = drone;
     }
 
     public void stopPilotingDrone() {

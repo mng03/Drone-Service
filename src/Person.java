@@ -5,13 +5,13 @@ import java.util.Date;
 import java.util.TreeSet;
 
 public class Person {
-    private String username;
-    private String fname;
-    private String lname;
-    private LocalDate bdate;
-    private String address;
-    private TreeSet<DeliveryService> workingFor;
-    private DeliveryService manages;
+    protected String username;
+    protected String fname;
+    protected String lname;
+    protected LocalDate bdate;
+    protected String address;
+    protected TreeSet<DeliveryService> workingFor;
+    protected DeliveryService manages;
 
     public Person(String username, String fname, String lname, int year, int month, int date, String address) {
         this.username = username;
