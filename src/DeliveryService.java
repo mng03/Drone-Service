@@ -142,6 +142,17 @@ public class DeliveryService {
         employees.remove(person.getUsername());
     }
 
+    public void makeManager(Person person) throws Exception {
+        if (!employees.containsKey(person.getUsername())) {
+            throw new Exception("ERROR:employee_does_not_work_for_this_service");
+        }
+        person.becomeManager(this);
+        if (manager != null) {
+            manager.stopManaging();
+        }
+        manager = person;
+    }
+
     public String toString() {
         return "name: " + name + ", revenue: $" + revenue + ", location: " + location.getName();
     }
