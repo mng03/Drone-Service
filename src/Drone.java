@@ -63,6 +63,8 @@ public class Drone {
         return sales;
     }
 
+    public void resetSales() { sales = 0; }
+
     public int getCurrCapacity() {
         return currCapacity;
     }

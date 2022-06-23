@@ -176,6 +176,13 @@ public class DeliveryService {
         ((Pilot) person).pilotDrone(drones.get(droneTag));
     }
 
+    public void getMoney() {
+        for (Drone d : drones.values()) {
+            revenue += d.getSales();
+            d.resetSales();
+        }
+    }
+
     public String toString() {
         return "name: " + name + ", revenue: $" + revenue + ", location: " + location.getName();
     }
