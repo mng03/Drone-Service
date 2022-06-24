@@ -1,7 +1,6 @@
 package src;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.TreeSet;
 
 public class Person {
@@ -67,7 +66,7 @@ public class Person {
         String workingAt = "";
         if (manages != null) {
             workingAt = "\nemployee is managing: " + manages;
-        } else {
+        } else if (workingFor.size() != 0) {
             workingAt += "\nemployee is working at: ";
             for (DeliveryService service : workingFor) {
                 workingAt += "\n&> " + service.getName();

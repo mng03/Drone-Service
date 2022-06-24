@@ -23,13 +23,13 @@ public class Drone {
     private Drone leader;
     private TreeMap<Integer, Drone> followers;
 
-    public Drone(int uniqueID, int capacity, int fuelMax, Location location) {
+    public Drone(int uniqueID, int capacity, int fuel, Location location) {
         this.uniqueID = uniqueID;
         this.capacity = capacity;
         this.homeBase = location;
 
         packages = new TreeMap<String, Package>();
-        fuel = fuelMax;
+        this.fuel = fuel;
         sales = 0;
         currCapacity = capacity;
         currLocation = location;
