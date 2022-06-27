@@ -232,18 +232,60 @@ public class InterfaceLoop {
     }
 
     void displayPersons() {
-        //TODO: Retest for manager, employee, and pilot
+        //TODO: Retest for pilot
         for (Person person : people.values()) {
             System.out.println(person);
         }
         System.out.println("OK:display_completed");
     }
 
-    void hireWorker(String service_name, String user_name) { }
+    void hireWorker(String service_name, String user_name) {
+        //TODO: Retest for pilot
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else if (!people.containsKey(user_name)) {
+            System.out.println("ERROR:person_does_not_exist");
+        } else {
+            try {
+                deliveryServices.get(service_name).hire(people.get(user_name));
+                System.out.println("OK:new_employee_has_been_hired");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
-    void fireWorker(String service_name, String user_name) { }
+    void fireWorker(String service_name, String user_name) {
+        //TODO: Retest for pilot
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else if (!people.containsKey(user_name)) {
+            System.out.println("ERROR:person_does_not_exist");
+        } else {
+            try {
+                deliveryServices.get(service_name).fire(people.get(user_name));
+                System.out.println("OK:employee_has_been_fired");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
-    void appointManager(String service_name, String user_name) { }
+    void appointManager(String service_name, String user_name) {
+        //TODO: Retest for pilot
+        if (!deliveryServices.containsKey(service_name)) {
+            System.out.println("ERROR:service_does_not_exist");
+        } else if (!people.containsKey(user_name)) {
+            System.out.println("ERROR:person_does_not_exist");
+        } else {
+            try {
+                deliveryServices.get(service_name).makeManager(people.get(user_name));
+                System.out.println("OK:employee_has_been_appointed_manager");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
     void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) { }
 

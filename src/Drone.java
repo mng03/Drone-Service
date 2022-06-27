@@ -145,7 +145,7 @@ public class Drone {
 
     public void setPilot(Pilot pilot) {
         if (this.pilot != null) {
-            this.pilot.stopPilotingDrone();
+            this.pilot.stopPilotingDrone(this);
         }
         if (leader != null) {
             leader.removeFromSwarm(this);
@@ -162,7 +162,7 @@ public class Drone {
             throw new Exception("ERROR:lead_drone_must_have_a_pilot");
         }
         if (this.pilot != null) {
-            this.pilot.stopPilotingDrone();
+            this.pilot.stopPilotingDrone(this);
             pilot = null;
         }
         if (this.leader != null) {

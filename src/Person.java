@@ -1,7 +1,7 @@
 package src;
 
 import java.time.LocalDate;
-import java.util.TreeSet;
+import java.util.TreeMap;
 
 public class Person {
     protected String username;
@@ -9,7 +9,7 @@ public class Person {
     protected String lname;
     protected LocalDate bdate;
     protected String address;
-    protected TreeSet<DeliveryService> workingFor;
+    protected TreeMap<String, DeliveryService> workingFor;
     protected DeliveryService manages;
 
     public Person(String username, String fname, String lname, int year, int month, int date, String address) {
@@ -18,7 +18,7 @@ public class Person {
         this.lname = lname;
         this.bdate = LocalDate.of(year, month, date);
         this.address = address;
-        workingFor = new TreeSet<DeliveryService>();
+        workingFor = new TreeMap<String, DeliveryService>();
         manages = null;
     }
 
@@ -34,18 +34,18 @@ public class Person {
         if (manages != null) {
             throw new Exception("ERROR:employee_is_managing_another_service");
         }
-        workingFor.add(service);
+        workingFor.put(service.getName(), service);
     }
 
     public void leave(DeliveryService service) throws Exception {
         if (manages != null) {
             throw new Exception("ERROR:employee_is_managing_a_service");
         }
-        workingFor.remove(service);
+        workingFor.remove(service.getName());
     }
 
     public void becomeManager(DeliveryService service) throws Exception {
-        if (workingFor.size() != 1) {
+        if (workingFor.size() > 1) {
             throw new Exception("ERROR:employee_is_working_at_other_companies");
         }
         manages = service;
@@ -65,10 +65,10 @@ public class Person {
     public String toString() {
         String workingAt = "";
         if (manages != null) {
-            workingAt = "\nemployee is managing: " + manages;
+            workingAt = "\nemployee is managing: " + manages.getName();
         } else if (workingFor.size() != 0) {
             workingAt += "\nemployee is working at: ";
-            for (DeliveryService service : workingFor) {
+            for (DeliveryService service : workingFor.values()) {
                 workingAt += "\n&> " + service.getName();
             }
         }

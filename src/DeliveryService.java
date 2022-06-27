@@ -139,12 +139,18 @@ public class DeliveryService {
     }
 
     public void hire(Person person) throws Exception {
+        if (employees.containsKey(person.getUsername())) {
+            throw new Exception("ERROR:person_already_works_for_service");
+        }
         person.workFor(this);
         employees.put(person.getUsername(), person);
         workerCount++;
     }
 
     public void fire(Person person) throws Exception {
+        if (!employees.containsKey(person.getUsername())) {
+            throw new Exception("ERROR:employee_does_not_work_for_this_service");
+        }
         person.leave(this);
         employees.remove(person.getUsername());
         workerCount--;

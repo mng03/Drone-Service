@@ -1,33 +1,35 @@
 package src;
 
+import java.util.TreeMap;
+
 public class Pilot extends Person {
     private String license;
     private int experience;
-    private Drone pilotedDrone;
+    private TreeMap<Integer, Drone> pilotedDrones;
 
     public Pilot(Person person, String license, int experience) {
         super(person);
         this.license = license;
         this.experience = experience;
-        pilotedDrone = null;
+        pilotedDrones = new TreeMap<Integer, Drone>();
     }
-
+    @Override
     public void workFor(DeliveryService service) throws Exception {
-        if (pilotedDrone != null) {
+        if (pilotedDrones.size() != 0) {
             throw new Exception("ERROR:employee_is_piloting_for_another_company");
         }
         super.workFor(service);
     }
-
+    @Override
     public void leave(DeliveryService service) throws Exception {
-        if (pilotedDrone != null) {
+        if (pilotedDrones.size() != 0) {
             throw new Exception("ERROR:employee_is_piloting_a_drone");
         }
         super.leave(service);
     }
 
     public void becomeManager(DeliveryService service) throws Exception {
-        if (pilotedDrone != null) {
+        if (pilotedDrones.size() != 0) {
             throw new Exception("ERROR:employee_is_busy_piloting_a_drone");
         }
         super.becomeManager(service);
@@ -40,12 +42,12 @@ public class Pilot extends Person {
         if (workingFor.size() != 1) {
             throw new Exception("ERROR:employee_is_working_at_other_companies");
         }
-        pilotedDrone = drone;
-        pilotedDrone.setPilot(this);
+        pilotedDrones.put(drone.getUniqueID(), drone);
+        drone.setPilot(this);
     }
 
-    public void stopPilotingDrone() {
-        pilotedDrone = null;
+    public void stopPilotingDrone(Drone drone) {
+        pilotedDrones.remove(drone.getUniqueID());
     }
 
     public void addExperience() {
@@ -54,6 +56,6 @@ public class Pilot extends Person {
 
     public String toString() {
         return super.toString() + "\nuser has a pilot's license (" + license + ") with " + experience + " successful flight(s)"
-                + (pilotedDrone == null ? "" : "\nemployee is flying these drones: [ drone tags | " + pilotedDrone.getUniqueID() + " ]");
+                + (pilotedDrones == null ? "" : "\nemployee is flying these drones: [ drone tags | " + " ]");
     }
 }
