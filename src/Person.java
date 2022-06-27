@@ -60,7 +60,10 @@ public class Person {
         if (manages != null) {
             throw new Exception("ERROR:employee_is_too_busy_managing");
         }
-        return new Pilot(this, license, experience);
+        Pilot newPilot = new Pilot(this, license, experience);
+        people.remove(this.username);
+        people.put(newPilot.username, newPilot);
+        return newPilot;
     }
 
     public String toString() {
