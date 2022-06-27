@@ -63,7 +63,10 @@ public class Person {
         } else if (this instanceof Pilot) {
             throw new Exception("ERROR:employee_is_already_trained");
         }
-        return new Pilot(this, license, experience);
+        Pilot newPilot = new Pilot(this, license, experience);
+        people.remove(this.username);
+        people.put(newPilot.username, newPilot);
+        return newPilot;
     }
 
     public String toString() {
