@@ -25,6 +25,7 @@ public class Person {
 
     public Person(Person person) {
         this(person.username, person.fname, person.lname, person.bdate.getYear(), person.bdate.getMonthValue(), person.bdate.getDayOfMonth(), person.address);
+        workingFor.putAll(person.workingFor);
     }
 
     public String getUsername() {
@@ -59,6 +60,8 @@ public class Person {
     public Pilot becomePilot(String license, int experience) throws Exception {
         if (manages != null) {
             throw new Exception("ERROR:employee_is_too_busy_managing");
+        } else if (this instanceof Pilot) {
+            throw new Exception("ERROR:employee_is_already_trained");
         }
         return new Pilot(this, license, experience);
     }
@@ -77,7 +80,6 @@ public class Person {
                 + ", address: " + address + workingAt;
     }
     public static void makePerson(String init_username, String init_fname, String init_lname, Integer init_year, Integer init_month, Integer init_date, String init_address) throws Exception {
-        //TODO: Do we need to check date values are valid?
         if(init_username.equals("")) {
             throw new Exception("ERROR:username_cannot_be_empty");
         } else if (people.containsKey(init_username)) {

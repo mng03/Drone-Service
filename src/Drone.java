@@ -33,7 +33,7 @@ public class Drone {
         sales = 0;
         currCapacity = capacity;
         currLocation = location;
-        homeBase.addDrone();
+        homeBase.addDrone(1);
         pilot = null;
         leader = null;
         followers = new TreeMap<Integer, Drone>();
@@ -125,14 +125,14 @@ public class Drone {
         for (Drone d : followers.values()) {
             d.move(destination);
         }
+        currLocation.removeDrone(1 + followers.size());
+        currLocation.addDrone(1 + followers.size());
         pilot.addExperience();
     }
 
     public void move(Location destination) {
         fuel -= currLocation.calcDistance(destination);
-        currLocation.removeDrone();
         currLocation = destination;
-        destination.addDrone();
     }
 
     public int getPackage(String barcode, int quantity) throws Exception {

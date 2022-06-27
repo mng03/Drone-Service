@@ -164,7 +164,6 @@ public class InterfaceLoop {
     }
 
     void displayPersons() {
-        //TODO: Retest for pilot
         for (Person person : Person.people.values()) {
             System.out.println(person);
         }
@@ -172,7 +171,6 @@ public class InterfaceLoop {
     }
 
     void hireWorker(String service_name, String user_name) {
-        //TODO: Retest for pilot
         try {
             DeliveryService.serviceExists(service_name);
             Person.personExists(user_name);
@@ -184,7 +182,6 @@ public class InterfaceLoop {
     }
 
     void fireWorker(String service_name, String user_name) {
-        //TODO: Retest for pilot
         try {
             DeliveryService.serviceExists(service_name);
             Person.personExists(user_name);
@@ -196,7 +193,6 @@ public class InterfaceLoop {
     }
 
     void appointManager(String service_name, String user_name) {
-        //TODO: Retest for pilot
         try {
             DeliveryService.serviceExists(service_name);
             Person.personExists(user_name);
@@ -208,7 +204,6 @@ public class InterfaceLoop {
     }
 
     void trainPilot(String service_name, String user_name, String init_license, Integer init_experience) {
-        //TODO: Test
         try {
             DeliveryService.serviceExists(service_name);
             Person.personExists(user_name);
@@ -220,7 +215,14 @@ public class InterfaceLoop {
     }
 
     void appointPilot(String service_name, String user_name, Integer drone_tag) {
-
+        try {
+            DeliveryService.serviceExists(service_name);
+            Person.personExists(user_name);
+            DeliveryService.deliveryServices.get(service_name).assignDronePilot(Person.people.get(user_name), drone_tag);
+            System.out.println("OK:employee_has_been_appointed_pilot");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) {
@@ -232,7 +234,13 @@ public class InterfaceLoop {
     }
 
     void collectRevenue(String service_name) {
-
+        try {
+            DeliveryService.serviceExists(service_name);
+            DeliveryService.deliveryServices.get(service_name).getMoney();
+            System.out.println("OK:revenue_collected");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void commandLoop() {

@@ -74,9 +74,8 @@ public class DeliveryService {
             throw new Exception("ERROR:drone_fuel_cannot_be_negative");
         } else if (location.getCurrSpots() == 0) {
             throw new Exception("ERROR:not_enough_space_to_create_new_drone");
-        } else {
-            drones.put(droneID, new Drone(droneID, capacity, fuelMax, location));
         }
+        drones.put(droneID, new Drone(droneID, capacity, fuelMax, location));
     }
 
     public void loadFuel(int droneID, int petrol) throws Exception {
@@ -106,9 +105,8 @@ public class DeliveryService {
     public void flyDrone(int droneID, Location destination) throws Exception {
         if (!drones.containsKey(droneID)) {
             throw new Exception("ERROR:drone_does_not_exist");
-        } else {
-            drones.get(droneID).fly(destination);
-        } 
+        }
+        drones.get(droneID).fly(destination);
     }
 
     public int requestPackage(Restaurant restaurant, int droneID, String barcode, int quantity) throws Exception {
@@ -157,13 +155,15 @@ public class DeliveryService {
     public void train(Person person, String license, int experience) throws Exception {
         if (!employees.containsKey(person.getUsername())) {
             throw new Exception("ERROR:employee_does_not_work_for_this_service");
-        }
-        if (manager == null) {
+        } else if (manager == null) {
             throw new Exception("ERROR:delivery_service_does_not_have_valid_manager");
+        } else if (experience < 0) {
+            throw new Exception("ERROR:experience_cannot_be_negative");
         }
         Pilot newPilot = person.becomePilot(license, experience);
         employees.remove(person.getUsername());
         employees.put(newPilot.getUsername(), newPilot);
+        Person.people.put(newPilot.getUsername(), newPilot);
     }
 
     public void assignDronePilot(Person person, int droneTag) throws Exception {

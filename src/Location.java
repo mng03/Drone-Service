@@ -51,12 +51,12 @@ public class Location {
         y = yCoord;
     }
 
-    public void addDrone() {
-        currSpots--;
+    public void addDrone(int amountOfDrones) {
+        currSpots = currSpots - amountOfDrones;
     }
 
-    public void removeDrone() {
-        currSpots++;
+    public void removeDrone(int amountOfDrones) {
+        currSpots = currSpots + amountOfDrones;
     }
 
     public boolean equals(Location loc) {
@@ -75,7 +75,6 @@ public class Location {
         return 1 + (int) Math.floor(Math.sqrt(Math.pow(getXCoord() - destination.getXCoord(), 2)
             + Math.pow(getYCoord() - destination.getYCoord(), 2)));
     }
-
     public String toString() {
         return "name: " + name + ", (x,y): (" + x + ", " + y + "), space: [" + currSpots + " / " + spaceLimit + "] remaining";
     }

@@ -53,9 +53,16 @@ public class Pilot extends Person {
     public void addExperience() {
         experience++;
     }
-
+    @Override
     public String toString() {
-        return super.toString() + "\nuser has a pilot's license (" + license + ") with " + experience + " successful flight(s)"
-                + (pilotedDrones == null ? "" : "\nemployee is flying these drones: [ drone tags | " + " ]");
+        String text = super.toString() + "\nuser has a pilot's license (" + license + ") with " + experience + " successful flight(s)";
+        if (pilotedDrones.size() > 0) {
+            text += "\nemployee is flying these drones: [ drone tags ";
+            for (Drone drone : pilotedDrones.values()) {
+                text += "| " + drone.getUniqueID() + " ";
+            }
+            text += "]";
+        }
+        return text;
     }
 }
