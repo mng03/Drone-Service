@@ -51,12 +51,12 @@ public class Location {
         y = yCoord;
     }
 
-    public void addDrone(int amountOfDrones) {
-        currSpots = currSpots - amountOfDrones;
+    public void addDrone() {
+        currSpots = currSpots--;
     }
 
-    public void removeDrone(int amountOfDrones) {
-        currSpots = currSpots + amountOfDrones;
+    public void removeDrone() {
+        currSpots = currSpots++;
     }
 
     public boolean equals(Location loc) {
