@@ -17,6 +17,7 @@ public class DeliveryService {
     private TreeMap<String, Person> employees;
     private Person manager;
     private int workerCount;
+    public static TreeMap<String, DeliveryService> deliveryServices = new TreeMap<String, DeliveryService>();
 
     public DeliveryService(String name, int revenue, Location location) {
         this.name = name;
@@ -65,13 +66,17 @@ public class DeliveryService {
     }
 
     public void purchaseDrone(int droneID, int capacity, int fuelMax) throws Exception {
-            if (location.getCurrSpots() == 0) {
-                throw new Exception("ERROR:not_enough_space_to_create_new_drone");
-            } else if (drones.containsKey(droneID)) {
-                throw new Exception("ERROR:drone_with_tag_already_exists_in_service");
-            } else {
-                drones.put(droneID, new Drone(droneID, capacity, fuelMax, location));
-            }
+        if (drones.containsKey(droneID)) {
+            throw new Exception("ERROR:drone_with_tag_already_exists_in_service");
+        } else if (capacity < 0) {
+            throw new Exception("ERROR:drone_capacity_cannot_be_negative");
+        } else if (fuelMax < 0) {
+            throw new Exception("ERROR:drone_fuel_cannot_be_negative");
+        } else if (location.getCurrSpots() == 0) {
+            throw new Exception("ERROR:not_enough_space_to_create_new_drone");
+        } else {
+            drones.put(droneID, new Drone(droneID, capacity, fuelMax, location));
+        }
     }
 
     public void loadFuel(int droneID, int petrol) throws Exception {
@@ -89,6 +94,10 @@ public class DeliveryService {
             throw new Exception("ERROR:drone_does_not_exist");
         } else if (workerCount < 1) {
             throw new Exception("ERROR:not_enough_workers_to_complete_task");
+        } else if (quantity <= 0) {
+            throw new Exception("ERROR:ingredient_must_be_have_a_positive_quantity");
+        } else if (unitPrice < 0) {
+            throw new Exception("ERROR:unit_price_cannot_be_negative");
         } else {
             drones.get(droneID).loadPackage(new Package(ingredient, unitPrice, quantity));
         }
@@ -145,7 +154,7 @@ public class DeliveryService {
         workerCount--;
     }
 
-    public Pilot train(Person person, String license, int experience) throws Exception {
+    public void train(Person person, String license, int experience) throws Exception {
         if (!employees.containsKey(person.getUsername())) {
             throw new Exception("ERROR:employee_does_not_work_for_this_service");
         }
@@ -155,7 +164,6 @@ public class DeliveryService {
         Pilot newPilot = person.becomePilot(license, experience);
         employees.remove(person.getUsername());
         employees.put(newPilot.getUsername(), newPilot);
-        return newPilot;
     }
 
     public void assignDronePilot(Person person, int droneTag) throws Exception {
@@ -206,5 +214,21 @@ public class DeliveryService {
 
     public String toString() {
         return "name: " + name + ", revenue: $" + revenue + ", location: " + location.getName();
+    }
+    public static void makeService(String init_name, Integer init_revenue, String located_at) throws Exception {
+        if(init_name.equals("")) {
+            throw new Exception("ERROR:delivery_service_name_cannot_be_empty");
+        } else if (deliveryServices.containsKey(init_name)) {
+            throw new Exception("ERROR:delivery_service_name_already_exists");
+        } else if (init_revenue < 0) {
+            throw new Exception("ERROR:revenue_cannot_be_negative");
+        } 
+        Location.locationExists(located_at);
+        deliveryServices.put(init_name, new DeliveryService(init_name, init_revenue, Location.locations.get(located_at)));
+    }
+    public static void serviceExists(String service_name) throws Exception {
+        if (!deliveryServices.containsKey(service_name)) {
+            throw new Exception("ERROR:service_does_not_exist");
+        }
     }
 }

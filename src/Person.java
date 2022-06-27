@@ -11,6 +11,7 @@ public class Person {
     protected String address;
     protected TreeMap<String, DeliveryService> workingFor;
     protected DeliveryService manages;
+    public static TreeMap<String, Person> people = new TreeMap<String, Person>();
 
     public Person(String username, String fname, String lname, int year, int month, int date, String address) {
         this.username = username;
@@ -74,5 +75,20 @@ public class Person {
         }
         return "userID: " + username + ", name: " + fname + " " + lname + ", birth date: " + bdate
                 + ", address: " + address + workingAt;
+    }
+    public static void makePerson(String init_username, String init_fname, String init_lname, Integer init_year, Integer init_month, Integer init_date, String init_address) throws Exception {
+        //TODO: Do we need to check date values are valid?
+        if(init_username.equals("")) {
+            throw new Exception("ERROR:username_cannot_be_empty");
+        } else if (people.containsKey(init_username)) {
+            throw new Exception("ERROR:username_already_exists");
+        } else {
+            people.put(init_username, new Person(init_username, init_fname, init_lname, init_year, init_month, init_date, init_address));
+        }
+    }
+    public static void personExists(String user_name) throws Exception {
+        if (!people.containsKey(user_name)) {
+            throw new Exception("ERROR:person_does_not_exist");
+        } 
     }
 }
