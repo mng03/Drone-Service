@@ -164,12 +164,15 @@ public class Drone {
         this.pilot = pilot;
     }
 
-    public void swarm(Drone leader) throws Exception {
+    public void swarm(Drone leadDrone) throws Exception {
         if (followers.size() > 0) {
             throw new Exception("ERROR:this_drone_is_leading_a_swarm_already");
         }
-        if (leader.pilot == null) {
+        if (leadDrone.pilot == null) {
             throw new Exception("ERROR:lead_drone_must_have_a_pilot");
+        }
+        if (leadDrone.leader != null) {
+            throw new Exception("ERROR:lead_drone_in_a_swarm");
         }
         if (this.pilot != null) {
             this.pilot.stopPilotingDrone(this);
@@ -178,8 +181,8 @@ public class Drone {
         if (this.leader != null) {
             this.leader.removeFromSwarm(this);
         }
-        this.leader = leader;
-        leader.addToSwarm(this);
+        this.leader = leadDrone;
+        leadDrone.addToSwarm(this);
     }
 
     public void leaveSwarm() throws Exception {
