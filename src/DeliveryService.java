@@ -80,13 +80,7 @@ public class DeliveryService {
         } else if (workerCount < 1) {
             throw new Exception("ERROR:not_enough_workers_to_complete_task");
         } else {
-            Drone drone = drones.get(droneID);
-            if (!drone.getCurrLocation().equals(location)) {
-                throw new Exception("ERROR:drone_not_located_at_home_base");
-            } else if (petrol < 0) {
-                throw new Exception("ERROR:fuel_cannot_be_negative");
-            }
-            drone.addFuel(petrol);
+            drones.get(droneID).addFuel(petrol);
         }
     }
 
@@ -96,33 +90,15 @@ public class DeliveryService {
         } else if (workerCount < 1) {
             throw new Exception("ERROR:not_enough_workers_to_complete_task");
         } else {
-            Drone drone = drones.get(droneID);
-            if (drone.getCurrCapacity() - quantity < 0) {
-                throw new Exception("ERROR:drone_does_not_have_enough_space_for_ingredient");
-            } else if (!drone.getCurrLocation().equals(location)) {
-                throw new Exception("ERROR:drone_not_located_at_home_base");
-            }
-            Package packageToAdd = new Package(ingredient, unitPrice, quantity);
-            drone.loadPackage(packageToAdd);
+            drones.get(droneID).loadPackage(new Package(ingredient, unitPrice, quantity));
         }
-
     }
 
     public void flyDrone(int droneID, Location destination) throws Exception {
         if (!drones.containsKey(droneID)) {
             throw new Exception("ERROR:drone_does_not_exist");
         } else {
-            Drone drone = drones.get(droneID);
-            int toDestinationDistance = destination.calcDistance(drone.getCurrLocation());
-            if (toDestinationDistance > drone.getFuel()) {
-                throw new Exception("ERROR:not_enough_fuel_to_reach_the_destination");
-            } else if (toDestinationDistance + destination.calcDistance(location) > drone.getFuel() && !destination.equals(location)) {
-                throw new Exception("ERROR:not_enough_fuel_to_reach_home_base_from_the_destination");
-            } else if (destination.getCurrSpots() == 0) {
-                throw new Exception("ERROR:not_enough_space_for_drone_at_destination");
-            } else {
-                drone.fly(destination);
-            }
+            drones.get(droneID).fly(destination);
         } 
     }
 

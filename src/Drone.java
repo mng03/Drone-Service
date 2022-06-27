@@ -79,11 +79,21 @@ public class Drone {
         fuel = newFuel;
     }
 
-    public void addFuel(int petrol) {
+    public void addFuel(int petrol) throws Exception {
+        if (!currLocation.equals(homeBase)) {
+            throw new Exception("ERROR:drone_not_located_at_home_base");
+        } else if (petrol < 0) {
+            throw new Exception("ERROR:fuel_cannot_be_negative");
+        }
         fuel += petrol;
     }
 
-    public void loadPackage(Package packageToAdd) {
+    public void loadPackage(Package packageToAdd) throws Exception {
+        if (currCapacity - packageToAdd.getQuantity() < 0) {
+            throw new Exception("ERROR:drone_does_not_have_enough_space_for_ingredient");
+        } else if (!currLocation.equals(homeBase)) {
+            throw new Exception("ERROR:drone_not_located_at_home_base");
+        }
         String barcode = packageToAdd.getIngredient().getBarcode();
         if (packages.containsKey(barcode)) {
             packages.get(barcode).addToPackage(packageToAdd.getQuantity());
