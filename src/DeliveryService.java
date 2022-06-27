@@ -65,17 +65,17 @@ public class DeliveryService {
         drones.remove(drone.getUniqueID());
     }
 
-    public void purchaseDrone(int droneID, int capacity, int fuelMax) throws Exception {
+    public void purchaseDrone(int droneID, int capacity, int fuel) throws Exception {
         if (drones.containsKey(droneID)) {
             throw new Exception("ERROR:drone_with_tag_already_exists_in_service");
         } else if (capacity < 0) {
             throw new Exception("ERROR:drone_capacity_cannot_be_negative");
-        } else if (fuelMax < 0) {
+        } else if (fuel < 0) {
             throw new Exception("ERROR:drone_fuel_cannot_be_negative");
         } else if (location.getCurrSpots() == 0) {
             throw new Exception("ERROR:not_enough_space_to_create_new_drone");
         } else {
-            drones.put(droneID, new Drone(droneID, capacity, fuelMax, location));
+            drones.put(droneID, new Drone(droneID, capacity, fuel, location));
         }
     }
 
