@@ -77,7 +77,6 @@ public class DeliveryService {
         } else {
             drones.put(droneID, new Drone(droneID, capacity, fuel, location));
         }
-        drones.put(droneID, new Drone(droneID, capacity, fuel, location));
     }
 
     public void loadFuel(int droneID, int petrol) throws Exception {
