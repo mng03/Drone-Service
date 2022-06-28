@@ -143,6 +143,8 @@ public class DeliveryService {
     public void makeManager(Person person) throws Exception {
         if (!employees.containsKey(person.getUsername())) {
             throw new Exception("ERROR:employee_does_not_work_for_this_service");
+        } else if (person.equals(manager)) {
+            throw new Exception("ERROR:this_person_is_already_managing_this_service");
         }
         person.becomeManager(this);
         if (manager != null) {
