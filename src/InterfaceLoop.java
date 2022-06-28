@@ -226,7 +226,6 @@ public class InterfaceLoop {
     }
 
     void joinSwarm(String service_name, Integer lead_drone_tag, Integer swarm_drone_tag) {
-        //TODO: Test
         try {
             DeliveryService.serviceExists(service_name);
             DeliveryService.deliveryServices.get(service_name).addSwarmDrone(lead_drone_tag, swarm_drone_tag);
@@ -237,7 +236,6 @@ public class InterfaceLoop {
     }
 
     void leaveSwarm(String service_name, Integer swarm_drone_tag) {
-        //TODO: Test
         try {
             DeliveryService.serviceExists(service_name);
             DeliveryService.deliveryServices.get(service_name).removeSwarmDrone(swarm_drone_tag);

@@ -112,6 +112,8 @@ public class Drone {
             throw new Exception("ERROR:not_enough_fuel_to_reach_the_destination");
         } else if (destination.calcDistance(currLocation) + destination.calcDistance(homeBase) > fuel) {
             throw new Exception("ERROR:not_enough_fuel_to_reach_home_base_from_the_destination");
+        } else if (destination == currLocation) {
+            throw new Exception("ERROR:drone_already_at_location");
         } else if (destination.getCurrSpots() < followers.size() + 1) {
             throw new Exception("ERROR:not_enough_space_to_maneuver_the_swarm_to_that_location");
         } else {
@@ -165,14 +167,17 @@ public class Drone {
     }
 
     public void swarm(Drone leadDrone) throws Exception {
+        if (leader != null && leadDrone.getUniqueID() == leader.getUniqueID()) {
+            throw new Exception("ERROR:swarm_drone_already_following_same_lead_drone");
+        }
         if (followers.size() > 0) {
             throw new Exception("ERROR:this_drone_is_leading_a_swarm_already");
         }
-        if (leadDrone.pilot == null) {
-            throw new Exception("ERROR:lead_drone_must_have_a_pilot");
-        }
         if (leadDrone.leader != null) {
             throw new Exception("ERROR:lead_drone_in_a_swarm");
+        }
+        if (leadDrone.pilot == null) {
+            throw new Exception("ERROR:lead_drone_must_have_a_pilot");
         }
         if (this.pilot != null) {
             this.pilot.stopPilotingDrone(this);
@@ -210,9 +215,9 @@ public class Drone {
             if (followers.size() > 0) {
                 text += "\ndrone is directing this swarm: [ drone tags ";
                 for (Drone d : followers.values()) {
-                    text += "| " + d.getUniqueID();
+                    text += "| " + d.getUniqueID() + " ";
                 }
-                text += " ]";
+                text += "]";
             }
         }
         for (Package pck : packages.values()) {
