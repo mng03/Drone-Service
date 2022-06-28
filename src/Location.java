@@ -52,11 +52,11 @@ public class Location {
     }
 
     public void addDrone() {
-        currSpots = currSpots--;
+        currSpots--;
     }
 
     public void removeDrone() {
-        currSpots = currSpots++;
+        currSpots++;
     }
 
     public boolean equals(Location loc) {
