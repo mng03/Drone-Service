@@ -112,7 +112,7 @@ public class Drone {
             throw new Exception("ERROR:not_enough_fuel_to_reach_the_destination");
         } else if (destination.calcDistance(currLocation) + destination.calcDistance(homeBase) > fuel) {
             throw new Exception("ERROR:not_enough_fuel_to_reach_home_base_from_the_destination");
-        } else if (destination == currLocation) {
+        } else if (destination.equals(currLocation)) {
             throw new Exception("ERROR:drone_already_at_location");
         } else if (destination.getCurrSpots() < followers.size() + 1) {
             throw new Exception("ERROR:not_enough_space_to_maneuver_the_swarm_to_that_location");
