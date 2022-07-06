@@ -143,8 +143,6 @@ public class DeliveryService {
     public void makeManager(Person person) throws Exception {
         if (!employees.containsKey(person.getUsername())) {
             throw new Exception("ERROR:employee_does_not_work_for_this_service");
-        } else if (person.equals(manager)) {
-            throw new Exception("ERROR:this_person_is_already_managing_this_service");
         }
         person.becomeManager(this);
         if (manager != null) {
@@ -163,29 +161,20 @@ public class DeliveryService {
         } else if (experience < 0) {
             throw new Exception("ERROR:experience_cannot_be_negative");
         }
-        Pilot newPilot = person.becomePilot(license, experience);
-        employees.remove(person.getUsername());
-        employees.put(newPilot.getUsername(), newPilot);
-        Person.people.put(newPilot.getUsername(), newPilot);
+        person.becomePilot(license, experience);
     }
 
     public void assignDronePilot(Person person, int droneTag) throws Exception {
         if (!employees.containsKey(person.getUsername())) {
             throw new Exception("ERROR:employee_does_not_work_for_this_service");
         }
-        if (!(person instanceof Pilot)) {
-            throw new Exception("ERROR:employee_does_not_have_a_valid_pilot's_license");
-        }
         if (!drones.containsKey(droneTag)) {
             throw new Exception("ERROR:drone_does_not_exist");
         }
-        if(drones.get(droneTag).getPilot() != null) {
-            ((Pilot) person).pilotDrone(drones.get(droneTag));
-            workerCount++;
-        } else {
-            ((Pilot) person).pilotDrone(drones.get(droneTag));
+        if(drones.get(droneTag).getPilot() == null) {
+            workerCount--;
         }
-        workerCount--;
+        person.pilotDrone(drones.get(droneTag));
     }
 
     public void addSwarmDrone(int leadDroneTag, int swarmDroneTag) throws Exception {

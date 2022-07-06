@@ -19,7 +19,7 @@ public class Drone {
     private int sales;
     private int currCapacity;
     private Location currLocation;
-    private Pilot pilot;
+    private Person pilot;
     private Drone leader;
     private TreeMap<Integer, Drone> followers;
 
@@ -73,7 +73,7 @@ public class Drone {
         return currLocation;
     }
 
-    public Pilot getPilot() { return pilot; }
+    public Person getPilot() { return pilot; }
 
     public void setFuel(int newFuel) {
         fuel = newFuel;
@@ -155,10 +155,7 @@ public class Drone {
         }
     }
 
-    public void setPilot(Pilot pilot) {
-        if (this.pilot != null) {
-            this.pilot.stopPilotingDrone(this);
-        }
+    public void setPilot(Person pilot) {
         if (leader != null) {
             leader.removeFromSwarm(this);
             leader = null;
