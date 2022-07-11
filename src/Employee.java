@@ -42,7 +42,7 @@ public class Employee implements PersonState {
         if (workingFor.size() != 1) {
             throw new Exception("ERROR:employee_is_working_at_other_companies");
         }
-        person.setState(new ActivePilot(drone, workingFor.firstEntry().getValue()));
+        person.setState(new ActivePilot(drone, workingFor.firstEntry().getValue(), person));
     }
     
     @Override

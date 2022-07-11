@@ -6,9 +6,9 @@ public class ActivePilot implements PersonState {
     private TreeMap<Integer, Drone> pilotedDrones;
     private DeliveryService workingFor;
 
-    public ActivePilot(Drone drone, DeliveryService service) {
+    public ActivePilot(Drone drone, DeliveryService service, Person person) throws Exception {
         pilotedDrones = new TreeMap<Integer, Drone>();
-        pilotedDrones.put(drone.getUniqueID(), drone);
+        pilotDrone(drone, person);
         workingFor = service;
     }
     @Override
@@ -32,11 +32,14 @@ public class ActivePilot implements PersonState {
     }
     @Override
     public void pilotDrone(Drone drone, Person person) throws Exception {
+        if (pilotedDrones.containsKey(drone.getUniqueID())) {
+            throw new Exception("ERROR:pilot_already_flying_drone");
+        }
         pilotedDrones.put(drone.getUniqueID(), drone);
-        drone.setPilot(person);
         if (drone.getPilot() != null) {
             drone.getPilot().stopPilotingDrone(drone);
         }
+        drone.setPilot(person);
     }
     public void stopPilotingDrone(Drone drone, Person person) {
         pilotedDrones.remove(drone.getUniqueID());

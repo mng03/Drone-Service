@@ -61,7 +61,7 @@ public class Person {
     }
 
     public void leave(DeliveryService service) throws Exception {
-        state.workFor(service);
+        state.leave(service, this);
     }
 
     public void becomeManager(DeliveryService service) throws Exception {
@@ -73,7 +73,7 @@ public class Person {
     }
 
     public void becomePilot(String license, int experience) throws Exception {
-        if (license != null) {
+        if (this.license != null) {
             throw new Exception("ERROR:employee_is_already_trained");
         }
         state.becomePilot(license, experience, this);
@@ -96,7 +96,10 @@ public class Person {
 
     public String toString() {
         String text = "userID: " + username + ", name: " + fname + " " + lname + ", birth date: " + bdate
-                + ", address: " + address + state.toString(this);
+                + ", address: " + address;
+        if (state != null) {
+            text += state.toString(this);
+        }
         if(!(state instanceof ActivePilot) && license != null) {
             text += "\nuser has a pilot's license (" + license + ") with " + experience + " successful flight(s)";
         }
