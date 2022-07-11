@@ -54,36 +54,36 @@ public class Person {
 
     public void workFor(DeliveryService service) throws Exception {
         if (state == null) {
-            state = new Employee(service);
+            state = new Employee(service, this);
         } else {
             state.workFor(service);
         }
     }
 
     public void leave(DeliveryService service) throws Exception {
-        state.leave(service, this);
+        state.leave(service);
     }
 
     public void becomeManager(DeliveryService service) throws Exception {
-        state.becomeManager(this);
+        state.becomeManager();
     }
 
     public void stopManaging() {
-        ((Manager) state).stopManaging(this);
+        ((Manager) state).stopManaging();
     }
 
     public void becomePilot(String license, int experience) throws Exception {
         if (this.license != null) {
             throw new Exception("ERROR:employee_is_already_trained");
         }
-        state.becomePilot(license, experience, this);
+        state.becomePilot(license, experience);
     }
 
     public void pilotDrone(Drone drone) throws Exception {
         if (license == null) {
             throw new Exception("ERROR:employee_does_not_have_a_valid_pilot's_license");
         }
-        state.pilotDrone(drone, this);
+        state.pilotDrone(drone);
     }
 
     public void addExperience() {
@@ -98,7 +98,7 @@ public class Person {
         String text = "userID: " + username + ", name: " + fname + " " + lname + ", birth date: " + bdate
                 + ", address: " + address;
         if (state != null) {
-            text += state.toString(this);
+            text += state.toString();
         }
         if(!(state instanceof ActivePilot) && license != null) {
             text += "\nuser has a pilot's license (" + license + ") with " + experience + " successful flight(s)";

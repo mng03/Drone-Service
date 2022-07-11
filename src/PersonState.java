@@ -4,13 +4,12 @@ public interface PersonState {
 
     void workFor(DeliveryService service) throws Exception;
     
-    void leave(DeliveryService service, Person person) throws Exception;
+    void leave(DeliveryService service) throws Exception;
 
-    void becomeManager(Person person) throws Exception;
+    void becomeManager() throws Exception;
 
-    void becomePilot(String license, int experience, Person person) throws Exception;
+    void becomePilot(String license, int experience) throws Exception;
 
-    void pilotDrone(Drone drone, Person person) throws Exception;
+    void pilotDrone(Drone drone) throws Exception;
 
-    String toString(Person person);
 }
