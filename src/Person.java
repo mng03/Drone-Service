@@ -4,13 +4,17 @@ import java.time.LocalDate;
 import java.util.TreeMap;
 
 public class Person {
-    protected String username;
-    protected String fname;
-    protected String lname;
-    protected LocalDate bdate;
-    protected String address;
-    protected TreeMap<String, DeliveryService> workingFor;
-    protected DeliveryService manages;
+    private String username;
+    private String fname;
+    private String lname;
+    private LocalDate bdate;
+    private String address;
+
+    private PersonState state;
+
+    private String license;
+    private int experience;
+
     public static TreeMap<String, Person> people = new TreeMap<String, Person>();
 
     public Person(String username, String fname, String lname, int year, int month, int date, String address) {
@@ -19,69 +23,91 @@ public class Person {
         this.lname = lname;
         this.bdate = LocalDate.of(year, month, date);
         this.address = address;
-        workingFor = new TreeMap<String, DeliveryService>();
-        manages = null;
-    }
-
-    public Person(Person person) {
-        this(person.username, person.fname, person.lname, person.bdate.getYear(), person.bdate.getMonthValue(), person.bdate.getDayOfMonth(), person.address);
-        workingFor.putAll(person.workingFor);
+        state = null;
+        license = null;
+        experience = 0;
     }
 
     public String getUsername() {
         return username;
     }
 
+    public void setState(PersonState state) {
+        this.state = state;
+    }
+
+    public void setLicense(String lic) {
+        license = lic;
+    }
+
+    public void setExperience(int exp) {
+        experience = exp;
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
     public void workFor(DeliveryService service) throws Exception {
-        if (manages != null) {
-            throw new Exception("ERROR:employee_is_managing_another_service");
+        if (state == null) {
+            state = new Employee(service, this);
+        } else {
+            state.workFor(service);
         }
-        workingFor.put(service.getName(), service);
     }
 
     public void leave(DeliveryService service) throws Exception {
-        if (manages != null) {
-            throw new Exception("ERROR:employee_is_managing_a_service");
-        }
-        workingFor.remove(service.getName());
+        state.leave(service);
     }
 
     public void becomeManager(DeliveryService service) throws Exception {
-        if (workingFor.size() > 1) {
-            throw new Exception("ERROR:employee_is_working_at_other_companies");
-        }
-        manages = service;
+        state.becomeManager();
     }
 
     public void stopManaging() {
-        manages = null;
+        ((Manager) state).stopManaging();
     }
 
-    public Pilot becomePilot(String license, int experience) throws Exception {
-        if (manages != null) {
-            throw new Exception("ERROR:employee_is_too_busy_managing");
-        } else if (this instanceof Pilot) {
+    public void becomePilot(String license, int experience) throws Exception {
+        if (this.license != null) {
             throw new Exception("ERROR:employee_is_already_trained");
         }
-        Pilot newPilot = new Pilot(this, license, experience);
-        people.remove(this.username);
-        people.put(newPilot.username, newPilot);
-        return newPilot;
+        state.becomePilot(license, experience);
+    }
+
+    public void pilotDrone(Drone drone) throws Exception {
+        if (license == null) {
+            throw new Exception("ERROR:employee_does_not_have_a_valid_pilot's_license");
+        }
+        state.pilotDrone(drone);
+    }
+
+    public void addExperience() {
+        experience++;
+    }
+
+    public void stopPilotingDrone(Drone drone) {
+        ((ActivePilot) state).stopPilotingDrone(drone, this);
     }
 
     public String toString() {
-        String workingAt = "";
-        if (manages != null) {
-            workingAt = "\nemployee is managing: " + manages.getName();
-        } else if (workingFor.size() != 0) {
-            workingAt += "\nemployee is working at: ";
-            for (DeliveryService service : workingFor.values()) {
-                workingAt += "\n&> " + service.getName();
-            }
+        String text = "userID: " + username + ", name: " + fname + " " + lname + ", birth date: " + bdate
+                + ", address: " + address;
+        if (state != null) {
+            text += state.toString();
         }
-        return "userID: " + username + ", name: " + fname + " " + lname + ", birth date: " + bdate
-                + ", address: " + address + workingAt;
+        if(!(state instanceof ActivePilot) && license != null) {
+            text += "\nuser has a pilot's license (" + license + ") with " + experience + " successful flight(s)";
+        }
+        return text;
     }
+
+
+    
     public static void makePerson(String init_username, String init_fname, String init_lname, Integer init_year, Integer init_month, Integer init_date, String init_address) throws Exception {
         if(init_username.equals("")) {
             throw new Exception("ERROR:username_cannot_be_empty");
