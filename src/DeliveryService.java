@@ -1,5 +1,8 @@
 package src;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.TreeMap;
 import java.util.Map;
 
@@ -18,6 +21,7 @@ public class DeliveryService {
     private Person manager;
     private int workerCount;
     public static TreeMap<String, DeliveryService> deliveryServices = new TreeMap<String, DeliveryService>();
+    public static ObservableList<String> deliveryServicesGUI = FXCollections.observableArrayList();
 
     public DeliveryService(String name, int revenue, Location location) {
         this.name = name;
@@ -217,6 +221,8 @@ public class DeliveryService {
         } 
         Location.locationExists(located_at);
         deliveryServices.put(init_name, new DeliveryService(init_name, init_revenue, Location.locations.get(located_at)));
+        deliveryServicesGUI.add(init_name);
+        FXCollections.sort(deliveryServicesGUI);
     }
     public static void serviceExists(String service_name) throws Exception {
         if (!deliveryServices.containsKey(service_name)) {

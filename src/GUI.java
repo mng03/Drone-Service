@@ -23,7 +23,8 @@ public class GUI extends Application {
     private Stack<String> forwardScenes;
     private java.io.ByteArrayOutputStream out;
 
-    public void start(Stage primaryStage) throws Exception {;
+    public void start(Stage primaryStage) throws Exception {
+        ;
         simulator = new InterfaceLoop();
         System.out.println("Welcome to the Restaurant Supply Express System!");
         out = new java.io.ByteArrayOutputStream();
@@ -56,7 +57,7 @@ public class GUI extends Application {
 
     private HBox createHomeBar(String next, String curr) {
         HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15,12,15,12));
+        hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
 
         if (!next.equals("Main")) {
@@ -67,7 +68,7 @@ public class GUI extends Application {
             home.setGraphic(view);
             home.setOnAction(
                     e -> {
-                        switchScenes("Main", curr,true, false);
+                        switchScenes("Main", curr, true, false);
                     }
             );
             hbox.getChildren().addAll(home);
@@ -82,7 +83,7 @@ public class GUI extends Application {
             back.setOnAction(
                     e -> {
                         forwardScenes.push(next);
-                        switchScenes(visitedScenes.pop(), curr, false,false);
+                        switchScenes(visitedScenes.pop(), curr, false, false);
                     }
             );
             hbox.getChildren().addAll(back);
@@ -96,7 +97,7 @@ public class GUI extends Application {
             forward.setGraphic(view3);
             forward.setOnAction(
                     e -> {
-                        switchScenes(forwardScenes.pop(), curr,true,false);
+                        switchScenes(forwardScenes.pop(), curr, true, false);
                     }
             );
             hbox.getChildren().addAll(forward);
@@ -111,14 +112,14 @@ public class GUI extends Application {
                     if (!scenes.containsKey("Make")) {
                         scenes.put("Make", createMakeScene());
                     }
-                    switchScenes("Make", "Main",true, true);
+                    switchScenes("Make", "Main", true, true);
                 }
         );
         Button print = new Button("Print Status");
         Button control = new Button("Change State");
 
         HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15,12,15,12));
+        hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         hbox.getChildren().addAll(create, print, control);
 
@@ -144,7 +145,7 @@ public class GUI extends Application {
                     if (!scenes.containsKey("MakeLocation")) {
                         scenes.put("MakeLocation", makeLocation());
                     }
-                    switchScenes("MakeLocation", "Make",true, true);
+                    switchScenes("MakeLocation", "Make", true, true);
                 }
         );
         Button deliveryService = new Button("Make Delivery Service");
@@ -153,15 +154,39 @@ public class GUI extends Application {
                     if (!scenes.containsKey("MakeDeliveryService")) {
                         scenes.put("MakeDeliveryService", makeDeliveryService());
                     }
-                    switchScenes("MakeDeliveryService", "Make",true, true);
+                    switchScenes("MakeDeliveryService", "Make", true, true);
                 }
         );
         Button restaurant = new Button("Make Restaurant");
+        restaurant.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("MakeRestaurant")) {
+                        scenes.put("MakeRestaurant", makeRestaurant());
+                    }
+                    switchScenes("MakeRestaurant", "Make", true, true);
+                }
+        );
         Button drone = new Button("Make Drone");
+        drone.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("MakeDrone")) {
+                        scenes.put("MakeDrone", makeDrone());
+                    }
+                    switchScenes("MakeDrone", "Make", true, true);
+                }
+        );
         Button person = new Button("Make Person");
+        person.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("MakePerson")) {
+                        scenes.put("MakePerson", makePerson());
+                    }
+                    switchScenes("MakePerson", "Make", true, true);
+                }
+        );
 
         HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15,12,15,12));
+        hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         hbox.getChildren().addAll(ingredient, location, deliveryService, restaurant, drone, person);
 
@@ -179,6 +204,7 @@ public class GUI extends Application {
         TextField weight = new TextField();
         weight.setPromptText("Type weight here (int)");
         weight.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+
         Button create = new Button("Create!");
         Label response = new Label();
         create.setOnAction(
@@ -193,12 +219,12 @@ public class GUI extends Application {
         );
 
         HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15,12,15,12));
+        hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         hbox.getChildren().addAll(barcode, name, weight, create);
 
         VBox vbox = new VBox();
-        hbox.setPadding(new Insets(12,12,12,12));
+        hbox.setPadding(new Insets(12, 12, 12, 12));
         vbox.setSpacing(10);
         vbox.getChildren().addAll(hbox, response);
 
@@ -220,6 +246,7 @@ public class GUI extends Application {
         TextField spaceLimit = new TextField();
         spaceLimit.setPromptText("Type space limit here");
         spaceLimit.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+
         Button create = new Button("Create!");
         Label response = new Label();
         create.setOnAction(
@@ -234,12 +261,12 @@ public class GUI extends Application {
         );
 
         HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15,12,15,12));
+        hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         hbox.getChildren().addAll(name, xCoord, yCoord, spaceLimit, create);
 
         VBox vbox = new VBox();
-        hbox.setPadding(new Insets(12,12,12,12));
+        hbox.setPadding(new Insets(12, 12, 12, 12));
         vbox.setSpacing(10);
         vbox.getChildren().addAll(hbox, response);
 
@@ -253,11 +280,12 @@ public class GUI extends Application {
         TextField name = new TextField();
         name.setPromptText("Type name here");
         TextField revenue = new TextField();
-        revenue.setPromptText("Type y coordinate here (int)");
+        revenue.setPromptText("Type revenue here (int)");
         revenue.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         ComboBox location = new ComboBox();
         location.setPromptText("Select location here");
         location.setItems(Location.locationsGUI);
+
         Button create = new Button("Create!");
         Label response = new Label();
         create.setOnAction(
@@ -272,12 +300,140 @@ public class GUI extends Application {
         );
 
         HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15,12,15,12));
+        hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         hbox.getChildren().addAll(name, revenue, location, create);
 
         VBox vbox = new VBox();
-        hbox.setPadding(new Insets(12,12,12,12));
+        hbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene makeRestaurant() {
+        TextField name = new TextField();
+        name.setPromptText("Type name here");
+        ComboBox location = new ComboBox();
+        location.setPromptText("Select location here");
+        location.setItems(Location.locationsGUI);
+
+        Button create = new Button("Create!");
+        Label response = new Label();
+        create.setOnAction(
+                e -> {
+                    if (name.getText().isEmpty() || location.getSelectionModel().isEmpty()) {
+                        System.out.println("You cannot leave a field blank.");
+                    } else {
+                        simulator.makeRestaurant(name.getText(), (String) location.getValue());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(name, location, create);
+
+        VBox vbox = new VBox();
+        hbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+
+    private Scene makeDrone() {
+        ComboBox deliveryService = new ComboBox();
+        deliveryService.setPromptText("Select delivery service here");
+        deliveryService.setItems(DeliveryService.deliveryServicesGUI);
+        TextField tag = new TextField();
+        tag.setPromptText("Type drone tag here (int)");
+        tag.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        TextField capacity = new TextField();
+        capacity.setPromptText("Type capacity here (int)");
+        capacity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        TextField fuel = new TextField();
+        fuel.setPromptText("Type fuel here (int)");
+        fuel.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+
+        Button create = new Button("Create!");
+        Label response = new Label();
+        create.setOnAction(
+                e -> {
+                    if (deliveryService.getSelectionModel().isEmpty() || tag.getText().isEmpty() || capacity.getText().isEmpty() || fuel.getText().isEmpty()) {
+                        System.out.println("You cannot leave a field blank.");
+                    } else {
+                        simulator.makeDrone((String) deliveryService.getValue(), Integer.parseInt(tag.getText()), Integer.parseInt(capacity.getText()), Integer.parseInt(fuel.getText()));
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(deliveryService, tag, capacity, fuel, create);
+
+        VBox vbox = new VBox();
+        hbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene makePerson() {
+        TextField username = new TextField();
+        username.setPromptText("Type username here");
+        TextField fName = new TextField();
+        fName.setPromptText("Type first name here");
+        TextField lName = new TextField();
+        lName.setPromptText("Type last name here");
+        TextField year = new TextField();
+        year.setPromptText("Type year born here (int)");
+        year.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        TextField month = new TextField();
+        month.setPromptText("Type month born here (int 1-12)");
+        month.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        TextField date = new TextField();
+        date.setPromptText("Type date born here");
+        date.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        TextField address = new TextField();
+        address.setPromptText("Type address here");
+
+        Button create = new Button("Create!");
+        Label response = new Label();
+        create.setOnAction(
+                e -> {
+                    if (username.getText().isEmpty() || fName.getText().isEmpty() || lName.getText().isEmpty() || year.getText().isEmpty() || month.getText().isEmpty() || date.getText().isEmpty() || address.getText().isEmpty()) {
+                        System.out.println("You cannot leave a field blank.");
+                    } else {
+                        simulator.makePerson(username.getText(), fName.getText(), lName.getText(), Integer.parseInt(year.getText()), Integer.parseInt(month.getText()), Integer.parseInt(date.getText()), address.getText());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(username, fName, lName, year, month, date, address, create);
+
+        VBox vbox = new VBox();
+        hbox.setPadding(new Insets(12, 12, 12, 12));
         vbox.setSpacing(10);
         vbox.getChildren().addAll(hbox, response);
 
