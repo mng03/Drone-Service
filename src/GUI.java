@@ -3,15 +3,11 @@ package src;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.layout.*;
-import javafx.scene.control.Button;
 import javafx.util.converter.IntegerStringConverter;
 
 import java.util.HashMap;
@@ -152,6 +148,14 @@ public class GUI extends Application {
                 }
         );
         Button deliveryService = new Button("Make Delivery Service");
+        deliveryService.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("MakeDeliveryService")) {
+                        scenes.put("MakeDeliveryService", makeDeliveryService());
+                    }
+                    switchScenes("MakeDeliveryService", "Make",true, true);
+                }
+        );
         Button restaurant = new Button("Make Restaurant");
         Button drone = new Button("Make Drone");
         Button person = new Button("Make Person");
@@ -233,6 +237,44 @@ public class GUI extends Application {
         hbox.setPadding(new Insets(15,12,15,12));
         hbox.setSpacing(10);
         hbox.getChildren().addAll(name, xCoord, yCoord, spaceLimit, create);
+
+        VBox vbox = new VBox();
+        hbox.setPadding(new Insets(12,12,12,12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene makeDeliveryService() {
+        TextField name = new TextField();
+        name.setPromptText("Type name here");
+        TextField revenue = new TextField();
+        revenue.setPromptText("Type y coordinate here (int)");
+        revenue.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        ComboBox location = new ComboBox();
+        location.setPromptText("Select location here");
+        location.setItems(Location.locationsGUI);
+        Button create = new Button("Create!");
+        Label response = new Label();
+        create.setOnAction(
+                e -> {
+                    if (name.getText().isEmpty() || revenue.getText().isEmpty() || location.getSelectionModel().isEmpty()) {
+                        System.out.println("You cannot leave a field blank.");
+                    } else {
+                        simulator.makeDeliveryService(name.getText(), Integer.parseInt(revenue.getText()), (String) location.getValue());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15,12,15,12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(name, revenue, location, create);
 
         VBox vbox = new VBox();
         hbox.setPadding(new Insets(12,12,12,12));
