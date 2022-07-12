@@ -45,17 +45,20 @@ public class GUI extends Application {
         this.primaryStage.show();
     }
 
-    private void switchScenes(String next, boolean clearForward) {
+    private void switchScenes(String next, String curr, boolean pushVisited, boolean clearForward) {
         if (clearForward) {
             forwardScenes.clear();
         }
+        if (pushVisited) {
+            visitedScenes.push(curr);
+        }
         out.reset();
         Scene scene = scenes.get(next);
-        ((BorderPane) scene.getRoot()).setTop(createHomeBar(next));
+        ((BorderPane) scene.getRoot()).setTop(createHomeBar(next, curr));
         primaryStage.setScene(scene);
     }
 
-    private HBox createHomeBar(String next) {
+    private HBox createHomeBar(String next, String curr) {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15,12,15,12));
         hbox.setSpacing(10);
@@ -68,8 +71,7 @@ public class GUI extends Application {
             home.setGraphic(view);
             home.setOnAction(
                     e -> {
-                        visitedScenes.push(next);
-                        switchScenes("Main", true);
+                        switchScenes("Main", curr,true, false);
                     }
             );
             hbox.getChildren().addAll(home);
@@ -84,7 +86,7 @@ public class GUI extends Application {
             back.setOnAction(
                     e -> {
                         forwardScenes.push(next);
-                        switchScenes(visitedScenes.pop(), false);
+                        switchScenes(visitedScenes.pop(), curr, false,false);
                     }
             );
             hbox.getChildren().addAll(back);
@@ -98,8 +100,7 @@ public class GUI extends Application {
             forward.setGraphic(view3);
             forward.setOnAction(
                     e -> {
-                        visitedScenes.push(next);
-                        switchScenes(forwardScenes.pop(), false);
+                        switchScenes(forwardScenes.pop(), curr,true,false);
                     }
             );
             hbox.getChildren().addAll(forward);
@@ -114,12 +115,11 @@ public class GUI extends Application {
                     if (!scenes.containsKey("Make")) {
                         scenes.put("Make", createMakeScene());
                     }
-                    switchScenes("Make", true);
+                    switchScenes("Make", "Main",true, true);
                 }
         );
         Button print = new Button("Print Status");
         Button control = new Button("Change State");
-
 
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15,12,15,12));
@@ -139,10 +139,18 @@ public class GUI extends Application {
                     if (!scenes.containsKey("MakeIngredient")) {
                         scenes.put("MakeIngredient", makeIngredient());
                     }
-                    switchScenes("MakeIngredient", true);
+                    switchScenes("MakeIngredient", "Make", true, true);
                 }
         );
         Button location = new Button("Make Location");
+        location.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("MakeLocation")) {
+                        scenes.put("MakeLocation", makeLocation());
+                    }
+                    switchScenes("MakeLocation", "Make",true, true);
+                }
+        );
         Button deliveryService = new Button("Make Delivery Service");
         Button restaurant = new Button("Make Restaurant");
         Button drone = new Button("Make Drone");
@@ -183,7 +191,48 @@ public class GUI extends Application {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15,12,15,12));
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(barcode, name, weight, create, response);
+        hbox.getChildren().addAll(barcode, name, weight, create);
+
+        VBox vbox = new VBox();
+        hbox.setPadding(new Insets(12,12,12,12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene makeLocation() {
+        TextField name = new TextField();
+        name.setPromptText("Type name here");
+        TextField xCoord = new TextField();
+        xCoord.setPromptText("Type x coordinate here (int)");
+        xCoord.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        TextField yCoord = new TextField();
+        yCoord.setPromptText("Type y coordinate here (int)");
+        yCoord.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        TextField spaceLimit = new TextField();
+        spaceLimit.setPromptText("Type space limit here");
+        spaceLimit.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        Button create = new Button("Create!");
+        Label response = new Label();
+        create.setOnAction(
+                e -> {
+                    if (name.getText().isEmpty() || xCoord.getText().isEmpty() || yCoord.getText().isEmpty() || spaceLimit.getText().isEmpty()) {
+                        System.out.println("You cannot leave a field blank.");
+                    } else {
+                        simulator.makeLocation(name.getText(), Integer.parseInt(xCoord.getText()), Integer.parseInt(yCoord.getText()), Integer.parseInt(spaceLimit.getText()));
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15,12,15,12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(name, xCoord, yCoord, spaceLimit, create);
 
         VBox vbox = new VBox();
         hbox.setPadding(new Insets(12,12,12,12));
