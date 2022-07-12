@@ -3,12 +3,16 @@ package src;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,15 +20,18 @@ import java.util.Stack;
 
 
 public class GUI extends Application {
-    InterfaceLoop simulator;
-    Map<String, Scene> scenes;
-    Stage primaryStage;
-    Stack<String> visitedScenes;
-    Stack<String> forwardScenes;
+    private InterfaceLoop simulator;
+    private Map<String, Scene> scenes;
+    private Stage primaryStage;
+    private Stack<String> visitedScenes;
+    private Stack<String> forwardScenes;
+    private java.io.ByteArrayOutputStream out;
 
     public void start(Stage primaryStage) throws Exception {;
         simulator = new InterfaceLoop();
         System.out.println("Welcome to the Restaurant Supply Express System!");
+        out = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(out));
 
         this.primaryStage = primaryStage;
         scenes = new HashMap<String, Scene>();
@@ -42,10 +49,10 @@ public class GUI extends Application {
         if (clearForward) {
             forwardScenes.clear();
         }
+        out.reset();
         Scene scene = scenes.get(next);
         ((BorderPane) scene.getRoot()).setTop(createHomeBar(next));
         primaryStage.setScene(scene);
-        System.out.println(visitedScenes.size());
     }
 
     private HBox createHomeBar(String next) {
@@ -126,13 +133,65 @@ public class GUI extends Application {
     }
 
     private Scene createMakeScene() {
+        Button ingredient = new Button("Make Ingredient");
+        ingredient.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("MakeIngredient")) {
+                        scenes.put("MakeIngredient", makeIngredient());
+                    }
+                    switchScenes("MakeIngredient", true);
+                }
+        );
+        Button location = new Button("Make Location");
+        Button deliveryService = new Button("Make Delivery Service");
+        Button restaurant = new Button("Make Restaurant");
+        Button drone = new Button("Make Drone");
+        Button person = new Button("Make Person");
+
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15,12,15,12));
         hbox.setSpacing(10);
-        hbox.getChildren().addAll();
+        hbox.getChildren().addAll(ingredient, location, deliveryService, restaurant, drone, person);
 
         BorderPane pane = new BorderPane();
         pane.setCenter(hbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene makeIngredient() {
+        TextField barcode = new TextField();
+        barcode.setPromptText("Type barcode here");
+        TextField name = new TextField();
+        name.setPromptText("Type name here");
+        TextField weight = new TextField();
+        weight.setPromptText("Type weight here (int)");
+        weight.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        Button create = new Button("Create!");
+        Label response = new Label();
+        create.setOnAction(
+                e -> {
+                    if (barcode.getText().isEmpty() || name.getText().isEmpty() || weight.getText().isEmpty()) {
+                        System.out.println("You cannot leave a field blank.");
+                    } else {
+                        simulator.makeIngredient(barcode.getText(), name.getText(), Integer.parseInt(weight.getText()));
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15,12,15,12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(barcode, name, weight, create, response);
+
+        VBox vbox = new VBox();
+        hbox.setPadding(new Insets(12,12,12,12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
         Scene scene = new Scene(pane, 1920, 1080);
         return scene;
     }
