@@ -116,6 +116,14 @@ public class GUI extends Application {
                 }
         );
         Button print = new Button("Print Status");
+        print.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("Print")) {
+                        scenes.put("Print", createPrintScene());
+                    }
+                    switchScenes("Print", "Main", true, true);
+                }
+        );
         Button control = new Button("Change State");
 
         HBox hbox = new HBox();
@@ -224,7 +232,7 @@ public class GUI extends Application {
         hbox.getChildren().addAll(barcode, name, weight, create);
 
         VBox vbox = new VBox();
-        hbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setPadding(new Insets(12, 12, 12, 12));
         vbox.setSpacing(10);
         vbox.getChildren().addAll(hbox, response);
 
@@ -266,7 +274,7 @@ public class GUI extends Application {
         hbox.getChildren().addAll(name, xCoord, yCoord, spaceLimit, create);
 
         VBox vbox = new VBox();
-        hbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setPadding(new Insets(12, 12, 12, 12));
         vbox.setSpacing(10);
         vbox.getChildren().addAll(hbox, response);
 
@@ -305,7 +313,7 @@ public class GUI extends Application {
         hbox.getChildren().addAll(name, revenue, location, create);
 
         VBox vbox = new VBox();
-        hbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setPadding(new Insets(12, 12, 12, 12));
         vbox.setSpacing(10);
         vbox.getChildren().addAll(hbox, response);
 
@@ -341,7 +349,7 @@ public class GUI extends Application {
         hbox.getChildren().addAll(name, location, create);
 
         VBox vbox = new VBox();
-        hbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setPadding(new Insets(12, 12, 12, 12));
         vbox.setSpacing(10);
         vbox.getChildren().addAll(hbox, response);
 
@@ -385,7 +393,7 @@ public class GUI extends Application {
         hbox.getChildren().addAll(deliveryService, tag, capacity, fuel, create);
 
         VBox vbox = new VBox();
-        hbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setPadding(new Insets(12, 12, 12, 12));
         vbox.setSpacing(10);
         vbox.getChildren().addAll(hbox, response);
 
@@ -433,9 +441,131 @@ public class GUI extends Application {
         hbox.getChildren().addAll(username, fName, lName, year, month, date, address, create);
 
         VBox vbox = new VBox();
-        hbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setPadding(new Insets(12, 12, 12, 12));
         vbox.setSpacing(10);
         vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene createPrintScene() {
+        Label output = new Label();
+
+        Button ingredients = new Button("Display Ingredients");
+        ingredients.setOnAction(
+                e -> {
+                    out.reset();
+                    simulator.displayIngredients();
+                    output.setText(out.toString());
+                }
+        );
+
+        Button locations = new Button("Display Locations");
+        locations.setOnAction(
+                e -> {
+                    out.reset();
+                    simulator.displayLocations();
+                    output.setText(out.toString());
+                }
+        );
+
+        ComboBox fromLocation = new ComboBox();
+        fromLocation.setPromptText("Select \"from\" location");
+        fromLocation.setItems(Location.locationsGUI);
+
+        ComboBox toLocation = new ComboBox();
+        toLocation.setPromptText("Select \"to\" location");
+        toLocation.setItems(Location.locationsGUI);
+
+        Button distance = new Button("Check Location Distance");
+        distance.setOnAction(
+                e -> {
+                    out.reset();
+                    if (fromLocation.getSelectionModel().isEmpty() || toLocation.getSelectionModel().isEmpty()) {
+                        System.out.println("Please select both locations.");
+                    } else {
+                        simulator.checkDistance((String) fromLocation.getValue(), (String) toLocation.getValue());
+                    }
+                    output.setText(out.toString());
+                }
+        );
+
+        VBox locBox = new VBox();
+        locBox.setPadding(new Insets(12, 12, 12, 12));
+        locBox.setSpacing(10);
+        locBox.getChildren().addAll(fromLocation, toLocation, distance);
+
+
+        Button deliveryServices = new Button("Display Delivery Services");
+        deliveryServices.setOnAction(
+                e -> {
+                    out.reset();
+                    simulator.displayServices();
+                    output.setText(out.toString());
+                }
+        );
+
+        Button restaurants = new Button("Display Restaurants");
+        restaurants.setOnAction(
+                e -> {
+                    out.reset();
+                    simulator.displayRestaurants();
+                    output.setText(out.toString());
+                }
+        );
+
+        ComboBox deliveryService = new ComboBox();
+        deliveryService.setPromptText("Select Delivery Service");
+        deliveryService.setItems(DeliveryService.deliveryServicesGUI);
+
+        Button someDrones = new Button("Display a Service's Drones");
+        someDrones.setOnAction(
+                e -> {
+                    out.reset();
+                    if (deliveryService.getSelectionModel().isEmpty()) {
+                        System.out.println("Please select the delivery service.");
+                    } else {
+                        simulator.displayDrones((String) deliveryService.getValue());
+                    }
+                    output.setText(out.toString());
+                }
+        );
+
+        VBox droneBox = new VBox();
+        droneBox.setPadding(new Insets(12, 12, 12, 12));
+        droneBox.setSpacing(10);
+        droneBox.getChildren().addAll(deliveryService, someDrones);
+
+        Button allDrones = new Button("Display All Drones");
+        allDrones.setOnAction(
+                e -> {
+                    out.reset();
+                    simulator.displayAllDrones();
+                    output.setText(out.toString());
+                }
+        );
+
+        Button persons = new Button("Display People");
+        persons.setOnAction(
+                e -> {
+                    out.reset();
+                    simulator.displayPersons();
+                    output.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(ingredients, locations, locBox, deliveryServices, restaurants, droneBox, allDrones, persons);
+
+        VBox vbox = new VBox();
+        vbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, output);
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
