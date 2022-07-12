@@ -125,6 +125,14 @@ public class GUI extends Application {
                 }
         );
         Button control = new Button("Change State");
+        control.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("Control")) {
+                        scenes.put("Control", createControlScene());
+                    }
+                    switchScenes("Control", "Main", true, true);
+                }
+        );
 
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
@@ -569,6 +577,31 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene createControlScene() {
+        Button flyDrone = new Button("Fly Drone");
+        Button loadIngredient = new Button("Load Ingredient");
+        Button loadFuel = new Button("Load Fuel");
+        Button purchaseIngredient = new Button("Purchase Ingredient");
+        Button hireWorker = new Button("Hire Worker");
+        Button fireWorker = new Button("Fire Worker");
+        Button appointManager = new Button("Appoint Manager");
+        Button trainPilot = new Button("Train Pilot");
+        Button appointPilot = new Button("Appoint Pilot");
+        Button joinSwarm = new Button("Join Swarm");
+        Button leaveSwarm = new Button("Leave Swarm");
+        Button collectRevenue = new Button("Collect Revenue");
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(flyDrone, loadIngredient, loadFuel, purchaseIngredient, hireWorker, fireWorker, appointManager, trainPilot, appointPilot, joinSwarm, leaveSwarm, collectRevenue);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(hbox);
         Scene scene = new Scene(pane, 1920, 1080);
         return scene;
     }
