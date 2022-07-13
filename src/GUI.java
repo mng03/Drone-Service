@@ -1,13 +1,17 @@
 package src;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.layout.*;
 import javafx.util.converter.IntegerStringConverter;
@@ -28,7 +32,6 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         ;
         simulator = new InterfaceLoop();
-        System.out.println("Welcome to the Restaurant Supply Express System!");
         out = new java.io.ByteArrayOutputStream();
         System.setOut(new java.io.PrintStream(out));
 
@@ -36,11 +39,10 @@ public class GUI extends Application {
         scenes = new HashMap<String, Scene>();
         visitedScenes = new Stack<String>();
         forwardScenes = new Stack<String>();
-        visitedScenes.push("Main");
         scenes.put("Main", createMainScene());
 
         this.primaryStage.setTitle("Drone Ingredient Delivery Services");
-        this.primaryStage.setScene(scenes.get("Main"));
+        switchScenes("Main", null, false, false);
         this.primaryStage.show();
     }
 
@@ -62,7 +64,61 @@ public class GUI extends Application {
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
 
-        if (!next.equals("Main")) {
+        if (!next.equals("Text")) {
+            if (!next.equals("Main")) {
+                Image img = new Image("homeButton.png", 40, 40, true, true);
+                ImageView view = new ImageView(img);
+                Button home = new Button();
+                home.setPrefSize(40, 40);
+                home.setGraphic(view);
+                home.setOnAction(
+                        e -> {
+                            switchScenes("Main", curr, true, true);
+                        }
+                );
+                hbox.getChildren().addAll(home);
+            } else {
+                Button text = new Button("Switch to text input");
+                text.setOnAction(
+                        e -> {
+                            if (!scenes.containsKey("Text")) {
+                                scenes.put("Text", createTextScene());
+                            }
+                            switchScenes("Text", "Main", false, true);
+                        }
+                );
+                hbox.getChildren().addAll(text);
+            }
+
+            if (!visitedScenes.isEmpty()) {
+                Image img2 = new Image("backButton.png", 40, 40, true, true);
+                ImageView view2 = new ImageView(img2);
+                Button back = new Button();
+                back.setPrefSize(40, 40);
+                back.setGraphic(view2);
+                back.setOnAction(
+                        e -> {
+                            forwardScenes.push(next);
+                            switchScenes(visitedScenes.pop(), curr, false, false);
+                        }
+                );
+                hbox.getChildren().addAll(back);
+            }
+
+            if (!forwardScenes.isEmpty()) {
+                Image img3 = new Image("forwardButton.png", 40, 40, true, true);
+                ImageView view3 = new ImageView(img3);
+                Button forward = new Button();
+                forward.setPrefSize(40, 40);
+                forward.setGraphic(view3);
+                forward.setOnAction(
+                        e -> {
+                            switchScenes(forwardScenes.pop(), curr, true, false);
+                        }
+                );
+                hbox.getChildren().addAll(forward);
+            }
+        } else {
             Image img = new Image("homeButton.png", 40, 40, true, true);
             ImageView view = new ImageView(img);
             Button home = new Button();
@@ -70,39 +126,10 @@ public class GUI extends Application {
             home.setGraphic(view);
             home.setOnAction(
                     e -> {
-                        switchScenes("Main", curr, true, false);
+                        switchScenes("Main", curr, false, true);
                     }
             );
             hbox.getChildren().addAll(home);
-        }
-
-        if (!visitedScenes.isEmpty()) {
-            Image img2 = new Image("backButton.png", 40, 40, true, true);
-            ImageView view2 = new ImageView(img2);
-            Button back = new Button();
-            back.setPrefSize(40, 40);
-            back.setGraphic(view2);
-            back.setOnAction(
-                    e -> {
-                        forwardScenes.push(next);
-                        switchScenes(visitedScenes.pop(), curr, false, false);
-                    }
-            );
-            hbox.getChildren().addAll(back);
-        }
-
-        if (!forwardScenes.isEmpty()) {
-            Image img3 = new Image("forwardButton.png", 40, 40, true, true);
-            ImageView view3 = new ImageView(img3);
-            Button forward = new Button();
-            forward.setPrefSize(40, 40);
-            forward.setGraphic(view3);
-            forward.setOnAction(
-                    e -> {
-                        switchScenes(forwardScenes.pop(), curr, true, false);
-                    }
-            );
-            hbox.getChildren().addAll(forward);
         }
         return hbox;
     }
@@ -143,6 +170,48 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(hbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene createTextScene() {
+        System.out.println("Welcome to the Restaurant Supply Express System!");
+        TextArea input = new TextArea();
+        input.setPromptText("Type input here");
+
+        TextArea output = new TextArea();
+        output.setPrefHeight(900);
+        output.setEditable(false);
+        output.setText(out.toString());
+        output.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                output.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
+        out.reset();
+
+        input.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    simulator.commandGUI(input.getText().toString());
+                    output.appendText(out.toString());
+                    out.reset();
+                    input.clear();
+                }
+            }
+        });
+
+        VBox vbox = new VBox();
+        vbox.setPadding(new Insets(15, 12, 15, 12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(input, output);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
         Scene scene = new Scene(pane, 1920, 1080);
         return scene;
     }
