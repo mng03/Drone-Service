@@ -620,11 +620,15 @@ public class GUI extends Application {
                     switchScenes("PurchaseIngredient", "Control", true, true);
                 }
         );
-        Button hireWorker = new Button("Hire Worker");
-        Button fireWorker = new Button("Fire Worker");
-        Button appointManager = new Button("Appoint Manager");
-        Button trainPilot = new Button("Train Pilot");
-        Button appointPilot = new Button("Appoint Pilot");
+        Button manageWorker = new Button("Manage Workers");
+        manageWorker.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("ManageWorker")) {
+                        scenes.put("ManageWorker", manageWorker());
+                    }
+                    switchScenes("ManageWorker", "Control", true, true);
+                }
+        );
         Button joinSwarm = new Button("Join Swarm");
         Button leaveSwarm = new Button("Leave Swarm");
         Button collectRevenue = new Button("Collect Revenue");
@@ -632,7 +636,7 @@ public class GUI extends Application {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(flyDrone, loadIngredient, loadFuel, purchaseIngredient, hireWorker, fireWorker, appointManager, trainPilot, appointPilot, joinSwarm, leaveSwarm, collectRevenue);
+        hbox.getChildren().addAll(flyDrone, loadIngredient, loadFuel, purchaseIngredient, manageWorker, joinSwarm, leaveSwarm, collectRevenue);
 
         BorderPane pane = new BorderPane();
         pane.setCenter(hbox);
@@ -820,6 +824,105 @@ public class GUI extends Application {
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         hbox.getChildren().addAll(restaurant, deliveryService, tag, ingredient, quantity, purchase);
+
+        VBox vbox = new VBox();
+        vbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene manageWorker() {
+        ComboBox deliveryService = new ComboBox();
+        deliveryService.setPromptText("Select delivery service here");
+        deliveryService.setItems(DeliveryService.deliveryServicesGUI);
+        ComboBox person = new ComboBox();
+        person.setPromptText("Select person here");
+        person.setItems(Person.peopleGUI);
+        ComboBox tag = new ComboBox();
+        tag.setPromptText("Select drone tag here");
+        deliveryService.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue ov, Object oldDS, Object newDS) {
+                tag.setItems(DeliveryService.deliveryServices.get(newDS).getDronesGUI());
+            }
+        });
+        TextField license = new TextField();
+        license.setPromptText("Type license here");
+        TextField experience = new TextField();
+        experience.setPromptText("Type quantity here (int)");
+        experience.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+
+        Label response = new Label();
+
+        Button hire = new Button("Hire!");
+        hire.setOnAction(
+                e -> {
+                    if (deliveryService.getSelectionModel().isEmpty() || person.getSelectionModel().isEmpty()) {
+                        System.out.println("You cannot leave the \"delivery service\" and \"person\" fields blank.");
+                    } else {
+                        simulator.hireWorker((String) deliveryService.getValue(), (String) person.getValue());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        Button fire = new Button("Fire!");
+        fire.setOnAction(
+                e -> {
+                    if (deliveryService.getSelectionModel().isEmpty() || person.getSelectionModel().isEmpty()) {
+                        System.out.println("You cannot leave the \"delivery service\" and \"person\" fields blank.");
+                    } else {
+                        simulator.fireWorker((String) deliveryService.getValue(), (String) person.getValue());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        Button appointManager = new Button("Appoint Manager!");
+        appointManager.setOnAction(
+                e -> {
+                    if (deliveryService.getSelectionModel().isEmpty() || person.getSelectionModel().isEmpty()) {
+                        System.out.println("You cannot leave the \"delivery service\" and \"person\" fields blank.");
+                    } else {
+                        simulator.appointManager((String) deliveryService.getValue(), (String) person.getValue());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        Button train = new Button("Train Pilot!");
+        train.setOnAction(
+                e -> {
+                    if (deliveryService.getSelectionModel().isEmpty() || person.getSelectionModel().isEmpty() || license.getText().isEmpty() || experience.getText().isEmpty()) {
+                        System.out.println("You cannot leave the \"delivery service\", \"person\", \"license\", and \"experience\" fields blank.");
+                    } else {
+                        simulator.trainPilot((String) deliveryService.getValue(), (String) person.getValue(), license.getText(), Integer.parseInt(experience.getText()));
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        Button appointPilot = new Button("Appoint Pilot!");
+        appointPilot.setOnAction(
+                e -> {
+                    if (deliveryService.getSelectionModel().isEmpty() || person.getSelectionModel().isEmpty() || tag.getSelectionModel().isEmpty()) {
+                        System.out.println("You cannot leave the \"delivery service\", \"person\", and \"tag\" fields blank.");
+                    } else {
+                        simulator.appointPilot((String) deliveryService.getValue(), (String) person.getValue(), (Integer) tag.getValue());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(deliveryService, person, tag, license, experience, hire, fire, appointManager, train, appointPilot);
 
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(12, 12, 12, 12));
