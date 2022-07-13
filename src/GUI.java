@@ -612,6 +612,14 @@ public class GUI extends Application {
                 }
         );
         Button purchaseIngredient = new Button("Purchase Ingredient");
+        purchaseIngredient.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("PurchaseIngredient")) {
+                        scenes.put("PurchaseIngredient", purchaseIngredient());
+                    }
+                    switchScenes("PurchaseIngredient", "Control", true, true);
+                }
+        );
         Button hireWorker = new Button("Hire Worker");
         Button fireWorker = new Button("Fire Worker");
         Button appointManager = new Button("Appoint Manager");
@@ -761,6 +769,57 @@ public class GUI extends Application {
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         hbox.getChildren().addAll(deliveryService, tag, petrol, load);
+
+        VBox vbox = new VBox();
+        vbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene purchaseIngredient() {
+        ComboBox restaurant = new ComboBox();
+        restaurant.setPromptText("Select restaurant here");
+        restaurant.setItems(Restaurant.restaurantsGUI);
+        ComboBox deliveryService = new ComboBox();
+        deliveryService.setPromptText("Select delivery service here");
+        deliveryService.setItems(DeliveryService.deliveryServicesGUI);
+        ComboBox tag = new ComboBox();
+        tag.setPromptText("Select drone tag here");
+        deliveryService.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue ov, Object oldDS, Object newDS) {
+                tag.setItems(DeliveryService.deliveryServices.get(newDS).getDronesGUI());
+            }
+        });
+        ComboBox ingredient = new ComboBox();
+        ingredient.setPromptText("Select ingredient here");
+        ingredient.setItems(IngredientInfo.ingredientInfosGUI);
+        TextField quantity = new TextField();
+        quantity.setPromptText("Type quantity here (int)");
+        quantity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+
+        Button purchase = new Button("Purchase!");
+        Label response = new Label();
+        purchase.setOnAction(
+                e -> {
+                    if (restaurant.getSelectionModel().isEmpty() || deliveryService.getSelectionModel().isEmpty() || tag.getSelectionModel().isEmpty() || ingredient.getSelectionModel().isEmpty() || quantity.getText().isEmpty()) {
+                        System.out.println("You cannot leave a field blank.");
+                    } else {
+                        simulator.purchaseIngredient((String) restaurant.getValue(), (String) deliveryService.getValue(), (Integer) tag.getValue(), (String) ingredient.getValue(), Integer.parseInt(quantity.getText()));
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(restaurant, deliveryService, tag, ingredient, quantity, purchase);
 
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(12, 12, 12, 12));
