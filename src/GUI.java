@@ -603,6 +603,14 @@ public class GUI extends Application {
                 }
         );
         Button loadFuel = new Button("Load Fuel");
+        loadFuel.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("LoadFuel")) {
+                        scenes.put("LoadFuel", loadFuel());
+                    }
+                    switchScenes("LoadFuel", "Control", true, true);
+                }
+        );
         Button purchaseIngredient = new Button("Purchase Ingredient");
         Button hireWorker = new Button("Hire Worker");
         Button fireWorker = new Button("Fire Worker");
@@ -720,7 +728,7 @@ public class GUI extends Application {
         return scene;
     }
 
-    private Scene loadIngredient() {
+    private Scene loadFuel() {
         ComboBox deliveryService = new ComboBox();
         deliveryService.setPromptText("Select delivery service here");
         deliveryService.setItems(DeliveryService.deliveryServicesGUI);
