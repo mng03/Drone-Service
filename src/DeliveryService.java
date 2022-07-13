@@ -22,6 +22,7 @@ public class DeliveryService {
     private int workerCount;
     public static TreeMap<String, DeliveryService> deliveryServices = new TreeMap<String, DeliveryService>();
     public static ObservableList<String> deliveryServicesGUI = FXCollections.observableArrayList();
+    private ObservableList<Integer> dronesGUI;
 
     public DeliveryService(String name, int revenue, Location location) {
         this.name = name;
@@ -31,6 +32,7 @@ public class DeliveryService {
         employees = new TreeMap<String, Person>();
         manager = null;
         workerCount = 0;
+        dronesGUI = FXCollections.observableArrayList();
     }
 
     public String getName() {
@@ -61,12 +63,16 @@ public class DeliveryService {
         this.revenue = revenue;
     }
 
+    public ObservableList<Integer> getDronesGUI() { return dronesGUI; }
+
     public void addDrone(Drone drone) {
         drones.put(drone.getUniqueID(), drone);
+        dronesGUI.add(drone.getUniqueID());
     }
 
     public void removeDrone(Drone drone) {
         drones.remove(drone.getUniqueID());
+        dronesGUI.remove(drone.getUniqueID());
     }
 
     public void purchaseDrone(int droneID, int capacity, int fuel) throws Exception {
@@ -80,6 +86,8 @@ public class DeliveryService {
             throw new Exception("ERROR:not_enough_space_to_create_new_drone");
         } else {
             drones.put(droneID, new Drone(droneID, capacity, fuel, location));
+            dronesGUI.add(droneID);
+            FXCollections.sort(dronesGUI);
         }
     }
 

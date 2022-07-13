@@ -1,6 +1,8 @@
 package src;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -583,6 +585,14 @@ public class GUI extends Application {
 
     private Scene createControlScene() {
         Button flyDrone = new Button("Fly Drone");
+        flyDrone.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("FlyDrone")) {
+                        scenes.put("FlyDrone", flyDrone());
+                    }
+                    switchScenes("FlyDrone", "Control", true, true);
+                }
+        );
         Button loadIngredient = new Button("Load Ingredient");
         Button loadFuel = new Button("Load Fuel");
         Button purchaseIngredient = new Button("Purchase Ingredient");
@@ -602,6 +612,51 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(hbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene flyDrone() {
+        ComboBox deliveryService = new ComboBox();
+        deliveryService.setPromptText("Select delivery service here");
+        deliveryService.setItems(DeliveryService.deliveryServicesGUI);
+        ComboBox tag = new ComboBox();
+        tag.setPromptText("Select drone tag here");
+        deliveryService.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue ov, Object oldDS, Object newDS) {
+                tag.setItems(DeliveryService.deliveryServices.get(newDS).getDronesGUI());
+            }
+        });
+        ComboBox location = new ComboBox();
+        location.setPromptText("Select location here");
+        location.setItems(Location.locationsGUI);
+
+        Button create = new Button("Create!");
+        Label response = new Label();
+        create.setOnAction(
+                e -> {
+                    if (deliveryService.getSelectionModel().isEmpty() || tag.getSelectionModel().isEmpty() || location.getSelectionModel().isEmpty()) {
+                        System.out.println("You cannot leave a field blank.");
+                    } else {
+                        simulator.flyDrone((String) deliveryService.getValue(), (Integer) tag.getValue(), (String) location.getValue());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(deliveryService, tag, location, create);
+
+        VBox vbox = new VBox();
+        vbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
         Scene scene = new Scene(pane, 1920, 1080);
         return scene;
     }
