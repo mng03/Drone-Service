@@ -629,14 +629,29 @@ public class GUI extends Application {
                     switchScenes("ManageWorker", "Control", true, true);
                 }
         );
-        Button joinSwarm = new Button("Join Swarm");
-        Button leaveSwarm = new Button("Leave Swarm");
+        Button manageSwarm = new Button("Manage Swarms");
+        manageSwarm.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("ManageSwarm")) {
+                        scenes.put("ManageSwarm", manageSwarm());
+                    }
+                    switchScenes("ManageSwarm", "Control", true, true);
+                }
+        );
         Button collectRevenue = new Button("Collect Revenue");
+        collectRevenue.setOnAction(
+                e -> {
+                    if (!scenes.containsKey("CollectRevenue")) {
+                        scenes.put("CollectRevenue", collectRevenue());
+                    }
+                    switchScenes("CollectRevenue", "Control", true, true);
+                }
+        );
 
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(flyDrone, loadIngredient, loadFuel, purchaseIngredient, manageWorker, joinSwarm, leaveSwarm, collectRevenue);
+        hbox.getChildren().addAll(flyDrone, loadIngredient, loadFuel, purchaseIngredient, manageWorker, manageSwarm, collectRevenue);
 
         BorderPane pane = new BorderPane();
         pane.setCenter(hbox);
@@ -923,6 +938,98 @@ public class GUI extends Application {
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         hbox.getChildren().addAll(deliveryService, person, tag, license, experience, hire, fire, appointManager, train, appointPilot);
+
+        VBox vbox = new VBox();
+        vbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene manageSwarm() {
+        ComboBox deliveryService = new ComboBox();
+        deliveryService.setPromptText("Select delivery service here");
+        deliveryService.setItems(DeliveryService.deliveryServicesGUI);
+        ComboBox leadTag = new ComboBox();
+        leadTag.setPromptText("Select lead drone tag here");
+        ComboBox swarmTag = new ComboBox();
+        swarmTag.setPromptText("Select swarm drone tag here");
+        deliveryService.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue ov, Object oldDS, Object newDS) {
+                leadTag.setItems(DeliveryService.deliveryServices.get(newDS).getDronesGUI());
+                swarmTag.setItems(DeliveryService.deliveryServices.get(newDS).getDronesGUI());
+            }
+        });
+
+        Label response = new Label();
+
+        Button joinSwarm = new Button("Join Swarm!");
+        joinSwarm.setOnAction(
+                e -> {
+                    if (deliveryService.getSelectionModel().isEmpty() || leadTag.getSelectionModel().isEmpty() || swarmTag.getSelectionModel().isEmpty()) {
+                        System.out.println("You cannot leave a field blank.");
+                    } else {
+                        simulator.joinSwarm((String) deliveryService.getValue(), (Integer) leadTag.getValue(), (Integer) swarmTag.getValue());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        Button leaveSwarm = new Button("Leave Swarm!");
+        leaveSwarm.setOnAction(
+                e -> {
+                    if (deliveryService.getSelectionModel().isEmpty() || swarmTag.getSelectionModel().isEmpty()) {
+                        System.out.println("You cannot leave the \"delivery service\" and \"swarm tag\" fields blank.");
+                    } else {
+                        simulator.leaveSwarm((String) deliveryService.getValue(), (Integer) swarmTag.getValue());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(deliveryService, leadTag, swarmTag, joinSwarm, leaveSwarm);
+
+        VBox vbox = new VBox();
+        vbox.setPadding(new Insets(12, 12, 12, 12));
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(hbox, response);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(vbox);
+        Scene scene = new Scene(pane, 1920, 1080);
+        return scene;
+    }
+
+    private Scene collectRevenue() {
+        ComboBox deliveryService = new ComboBox();
+        deliveryService.setPromptText("Select delivery service here");
+        deliveryService.setItems(DeliveryService.deliveryServicesGUI);
+
+        Button collect = new Button("Collect!");
+        Label response = new Label();
+        collect.setOnAction(
+                e -> {
+                    if (deliveryService.getSelectionModel().isEmpty()) {
+                        System.out.println("You cannot leave a field blank.");
+                    } else {
+                        simulator.collectRevenue((String) deliveryService.getValue());
+                    }
+                    response.setText(out.toString());
+                }
+        );
+
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(deliveryService, collect);
 
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(12, 12, 12, 12));
