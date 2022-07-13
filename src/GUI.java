@@ -648,9 +648,9 @@ public class GUI extends Application {
         location.setPromptText("Select location here");
         location.setItems(Location.locationsGUI);
 
-        Button create = new Button("Create!");
+        Button fly = new Button("Fly!");
         Label response = new Label();
-        create.setOnAction(
+        fly.setOnAction(
                 e -> {
                     if (deliveryService.getSelectionModel().isEmpty() || tag.getSelectionModel().isEmpty() || location.getSelectionModel().isEmpty()) {
                         System.out.println("You cannot leave a field blank.");
@@ -664,7 +664,7 @@ public class GUI extends Application {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(deliveryService, tag, location, create);
+        hbox.getChildren().addAll(deliveryService, tag, location, fly);
 
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(12, 12, 12, 12));
@@ -699,9 +699,9 @@ public class GUI extends Application {
         unitPrice.setPromptText("Type unit price here (int)");
         unitPrice.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
-        Button create = new Button("Create!");
+        Button load = new Button("Load!");
         Label response = new Label();
-        create.setOnAction(
+        load.setOnAction(
                 e -> {
                     if (deliveryService.getSelectionModel().isEmpty() || tag.getSelectionModel().isEmpty() || ingredient.getSelectionModel().isEmpty() || quantity.getText().isEmpty() || unitPrice.getText().isEmpty()) {
                         System.out.println("You cannot leave a field blank.");
@@ -715,7 +715,7 @@ public class GUI extends Application {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(deliveryService, tag, ingredient, quantity, unitPrice, create);
+        hbox.getChildren().addAll(deliveryService, tag, ingredient, quantity, unitPrice, load);
 
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(12, 12, 12, 12));
@@ -744,9 +744,9 @@ public class GUI extends Application {
         petrol.setPromptText("Type petrol here (int)");
         petrol.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
-        Button create = new Button("Create!");
+        Button load = new Button("Load!");
         Label response = new Label();
-        create.setOnAction(
+        load.setOnAction(
                 e -> {
                     if (deliveryService.getSelectionModel().isEmpty() || tag.getSelectionModel().isEmpty() || petrol.getText().isEmpty()) {
                         System.out.println("You cannot leave a field blank.");
@@ -760,7 +760,7 @@ public class GUI extends Application {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(deliveryService, tag, petrol, create);
+        hbox.getChildren().addAll(deliveryService, tag, petrol, load);
 
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(12, 12, 12, 12));
