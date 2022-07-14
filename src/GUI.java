@@ -293,7 +293,17 @@ public class GUI extends Application {
         weight.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
         Button create = new Button("Create!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         create.setOnAction(
                 e -> {
                     if (barcode.getText().isEmpty() || name.getText().isEmpty() || weight.getText().isEmpty()) {
@@ -302,6 +312,7 @@ public class GUI extends Application {
                         simulator.makeIngredient(barcode.getText(), name.getText(), Integer.parseInt(weight.getText()));
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -335,7 +346,17 @@ public class GUI extends Application {
         spaceLimit.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
         Button create = new Button("Create!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         create.setOnAction(
                 e -> {
                     if (name.getText().isEmpty() || xCoord.getText().isEmpty() || yCoord.getText().isEmpty() || spaceLimit.getText().isEmpty()) {
@@ -344,6 +365,7 @@ public class GUI extends Application {
                         simulator.makeLocation(name.getText(), Integer.parseInt(xCoord.getText()), Integer.parseInt(yCoord.getText()), Integer.parseInt(spaceLimit.getText()));
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -374,7 +396,17 @@ public class GUI extends Application {
         location.setItems(Location.locationsGUI);
 
         Button create = new Button("Create!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         create.setOnAction(
                 e -> {
                     if (name.getText().isEmpty() || revenue.getText().isEmpty() || location.getSelectionModel().isEmpty()) {
@@ -383,6 +415,7 @@ public class GUI extends Application {
                         simulator.makeDeliveryService(name.getText(), Integer.parseInt(revenue.getText()), (String) location.getValue());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -410,7 +443,17 @@ public class GUI extends Application {
         location.setItems(Location.locationsGUI);
 
         Button create = new Button("Create!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         create.setOnAction(
                 e -> {
                     if (name.getText().isEmpty() || location.getSelectionModel().isEmpty()) {
@@ -419,6 +462,7 @@ public class GUI extends Application {
                         simulator.makeRestaurant(name.getText(), (String) location.getValue());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -454,7 +498,17 @@ public class GUI extends Application {
         fuel.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
         Button create = new Button("Create!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         create.setOnAction(
                 e -> {
                     if (deliveryService.getSelectionModel().isEmpty() || tag.getText().isEmpty() || capacity.getText().isEmpty() || fuel.getText().isEmpty()) {
@@ -463,6 +517,7 @@ public class GUI extends Application {
                         simulator.makeDrone((String) deliveryService.getValue(), Integer.parseInt(tag.getText()), Integer.parseInt(capacity.getText()), Integer.parseInt(fuel.getText()));
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -502,7 +557,17 @@ public class GUI extends Application {
         address.setPromptText("Type address here");
 
         Button create = new Button("Create!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         create.setOnAction(
                 e -> {
                     if (username.getText().isEmpty() || fName.getText().isEmpty() || lName.getText().isEmpty() || year.getText().isEmpty() || month.getText().isEmpty() || date.getText().isEmpty() || address.getText().isEmpty()) {
@@ -511,6 +576,7 @@ public class GUI extends Application {
                         simulator.makePerson(username.getText(), fName.getText(), lName.getText(), Integer.parseInt(year.getText()), Integer.parseInt(month.getText()), Integer.parseInt(date.getText()), address.getText());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -531,7 +597,17 @@ public class GUI extends Application {
     }
 
     private Scene createPrintScene() {
-        Label output = new Label();
+        TextArea output = new TextArea();
+        output.setPrefHeight(900);
+        output.setEditable(false);
+        output.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                output.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
 
         Button ingredients = new Button("Display Ingredients");
         ingredients.setOnAction(
@@ -539,6 +615,7 @@ public class GUI extends Application {
                     out.reset();
                     simulator.displayIngredients();
                     output.setText(out.toString());
+                    output.appendText("");
                 }
         );
 
@@ -548,6 +625,7 @@ public class GUI extends Application {
                     out.reset();
                     simulator.displayLocations();
                     output.setText(out.toString());
+                    output.appendText("");
                 }
         );
 
@@ -569,6 +647,7 @@ public class GUI extends Application {
                         simulator.checkDistance((String) fromLocation.getValue(), (String) toLocation.getValue());
                     }
                     output.setText(out.toString());
+                    output.appendText("");
                 }
         );
 
@@ -584,6 +663,7 @@ public class GUI extends Application {
                     out.reset();
                     simulator.displayServices();
                     output.setText(out.toString());
+                    output.appendText("");
                 }
         );
 
@@ -593,6 +673,7 @@ public class GUI extends Application {
                     out.reset();
                     simulator.displayRestaurants();
                     output.setText(out.toString());
+                    output.appendText("");
                 }
         );
 
@@ -610,6 +691,7 @@ public class GUI extends Application {
                         simulator.displayDrones((String) deliveryService.getValue());
                     }
                     output.setText(out.toString());
+                    output.appendText("");
                 }
         );
 
@@ -624,6 +706,7 @@ public class GUI extends Application {
                     out.reset();
                     simulator.displayAllDrones();
                     output.setText(out.toString());
+                    output.appendText("");
                 }
         );
 
@@ -633,6 +716,7 @@ public class GUI extends Application {
                     out.reset();
                     simulator.displayPersons();
                     output.setText(out.toString());
+                    output.appendText("");
                 }
         );
 
@@ -745,7 +829,17 @@ public class GUI extends Application {
         location.setItems(Location.locationsGUI);
 
         Button fly = new Button("Fly!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         fly.setOnAction(
                 e -> {
                     if (deliveryService.getSelectionModel().isEmpty() || tag.getSelectionModel().isEmpty() || location.getSelectionModel().isEmpty()) {
@@ -754,6 +848,7 @@ public class GUI extends Application {
                         simulator.flyDrone((String) deliveryService.getValue(), (Integer) tag.getValue(), (String) location.getValue());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -796,7 +891,17 @@ public class GUI extends Application {
         unitPrice.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
         Button load = new Button("Load!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         load.setOnAction(
                 e -> {
                     if (deliveryService.getSelectionModel().isEmpty() || tag.getSelectionModel().isEmpty() || ingredient.getSelectionModel().isEmpty() || quantity.getText().isEmpty() || unitPrice.getText().isEmpty()) {
@@ -805,6 +910,7 @@ public class GUI extends Application {
                         simulator.loadIngredient((String) deliveryService.getValue(), (Integer) tag.getValue(), (String) ingredient.getValue(), Integer.parseInt(quantity.getText()), Integer.parseInt(unitPrice.getText()));
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -841,7 +947,17 @@ public class GUI extends Application {
         petrol.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
         Button load = new Button("Load!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         load.setOnAction(
                 e -> {
                     if (deliveryService.getSelectionModel().isEmpty() || tag.getSelectionModel().isEmpty() || petrol.getText().isEmpty()) {
@@ -850,6 +966,7 @@ public class GUI extends Application {
                         simulator.loadFuel((String) deliveryService.getValue(), (Integer) tag.getValue(), Integer.parseInt(petrol.getText()));
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -892,7 +1009,17 @@ public class GUI extends Application {
         quantity.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
         Button purchase = new Button("Purchase!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         purchase.setOnAction(
                 e -> {
                     if (restaurant.getSelectionModel().isEmpty() || deliveryService.getSelectionModel().isEmpty() || tag.getSelectionModel().isEmpty() || ingredient.getSelectionModel().isEmpty() || quantity.getText().isEmpty()) {
@@ -901,6 +1028,7 @@ public class GUI extends Application {
                         simulator.purchaseIngredient((String) restaurant.getValue(), (String) deliveryService.getValue(), (Integer) tag.getValue(), (String) ingredient.getValue(), Integer.parseInt(quantity.getText()));
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -941,7 +1069,17 @@ public class GUI extends Application {
         experience.setPromptText("Type experience here (int)");
         experience.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
 
         Button hire = new Button("Hire!");
         hire.setOnAction(
@@ -952,6 +1090,7 @@ public class GUI extends Application {
                         simulator.hireWorker((String) deliveryService.getValue(), (String) person.getValue());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -964,6 +1103,7 @@ public class GUI extends Application {
                         simulator.fireWorker((String) deliveryService.getValue(), (String) person.getValue());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -976,6 +1116,7 @@ public class GUI extends Application {
                         simulator.appointManager((String) deliveryService.getValue(), (String) person.getValue());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -988,6 +1129,7 @@ public class GUI extends Application {
                         simulator.trainPilot((String) deliveryService.getValue(), (String) person.getValue(), license.getText(), Integer.parseInt(experience.getText()));
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -1000,6 +1142,7 @@ public class GUI extends Application {
                         simulator.appointPilot((String) deliveryService.getValue(), (String) person.getValue(), (Integer) tag.getValue());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -1035,7 +1178,17 @@ public class GUI extends Application {
             }
         });
 
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
 
         Button joinSwarm = new Button("Join Swarm!");
         joinSwarm.setOnAction(
@@ -1046,6 +1199,7 @@ public class GUI extends Application {
                         simulator.joinSwarm((String) deliveryService.getValue(), (Integer) leadTag.getValue(), (Integer) swarmTag.getValue());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -1058,6 +1212,7 @@ public class GUI extends Application {
                         simulator.leaveSwarm((String) deliveryService.getValue(), (Integer) swarmTag.getValue());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
@@ -1083,7 +1238,17 @@ public class GUI extends Application {
         deliveryService.setItems(DeliveryService.deliveryServicesGUI);
 
         Button collect = new Button("Collect!");
-        Label response = new Label();
+        TextArea response = new TextArea();
+        response.setPrefHeight(900);
+        response.setEditable(false);
+        response.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                                Object newValue) {
+                response.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
         collect.setOnAction(
                 e -> {
                     if (deliveryService.getSelectionModel().isEmpty()) {
@@ -1092,6 +1257,7 @@ public class GUI extends Application {
                         simulator.collectRevenue((String) deliveryService.getValue());
                     }
                     response.setText(out.toString());
+                    response.appendText("");
                 }
         );
 
