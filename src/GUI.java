@@ -66,7 +66,7 @@ public class GUI extends Application {
 
         if (!next.equals("Text")) {
             if (!next.equals("Main")) {
-                Image img = new Image("homeButton.png", 40, 40, true, true);
+                Image img = new Image("Images/homeButton.png", 40, 40, true, true);
                 ImageView view = new ImageView(img);
                 Button home = new Button();
                 home.setPrefSize(40, 40);
@@ -91,7 +91,7 @@ public class GUI extends Application {
             }
 
             if (!visitedScenes.isEmpty()) {
-                Image img2 = new Image("backButton.png", 40, 40, true, true);
+                Image img2 = new Image("Images/backButton.png", 40, 40, true, true);
                 ImageView view2 = new ImageView(img2);
                 Button back = new Button();
                 back.setPrefSize(40, 40);
@@ -106,7 +106,7 @@ public class GUI extends Application {
             }
 
             if (!forwardScenes.isEmpty()) {
-                Image img3 = new Image("forwardButton.png", 40, 40, true, true);
+                Image img3 = new Image("Images/forwardButton.png", 40, 40, true, true);
                 ImageView view3 = new ImageView(img3);
                 Button forward = new Button();
                 forward.setPrefSize(40, 40);
@@ -119,7 +119,7 @@ public class GUI extends Application {
                 hbox.getChildren().addAll(forward);
             }
         } else {
-            Image img = new Image("homeButton.png", 40, 40, true, true);
+            Image img = new Image("Images/homeButton.png", 40, 40, true, true);
             ImageView view = new ImageView(img);
             Button home = new Button();
             home.setPrefSize(40, 40);
