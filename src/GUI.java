@@ -170,7 +170,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(hbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -212,7 +212,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -279,7 +279,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(hbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -317,7 +317,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -359,7 +359,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -398,7 +398,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -434,7 +434,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -478,7 +478,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -526,7 +526,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -648,7 +648,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -724,7 +724,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(hbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -769,7 +769,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -820,7 +820,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -865,7 +865,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -916,7 +916,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -938,7 +938,7 @@ public class GUI extends Application {
         TextField license = new TextField();
         license.setPromptText("Type license here");
         TextField experience = new TextField();
-        experience.setPromptText("Type quantity here (int)");
+        experience.setPromptText("Type experience here (int)");
         experience.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
         Label response = new Label();
@@ -1015,7 +1015,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -1073,7 +1073,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 
@@ -1107,7 +1107,7 @@ public class GUI extends Application {
 
         BorderPane pane = new BorderPane();
         pane.setCenter(vbox);
-        Scene scene = new Scene(pane, 1920, 1080);
+        Scene scene = new Scene(pane, 1280, 720);
         return scene;
     }
 }
