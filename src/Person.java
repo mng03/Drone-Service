@@ -1,5 +1,8 @@
 package src;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.time.LocalDate;
 import java.util.TreeMap;
 
@@ -16,6 +19,7 @@ public class Person {
     private int experience;
 
     public static TreeMap<String, Person> people = new TreeMap<String, Person>();
+    public static ObservableList<String> peopleGUI = FXCollections.observableArrayList();
 
     public Person(String username, String fname, String lname, int year, int month, int date, String address) {
         this.username = username;
@@ -115,6 +119,8 @@ public class Person {
             throw new Exception("ERROR:username_already_exists");
         } else {
             people.put(init_username, new Person(init_username, init_fname, init_lname, init_year, init_month, init_date, init_address));
+            peopleGUI.add(init_username);
+            FXCollections.sort(peopleGUI);
         }
     }
     public static void personExists(String user_name) throws Exception {

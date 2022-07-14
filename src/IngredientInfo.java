@@ -1,5 +1,8 @@
 package src;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.TreeMap;
 
 /**
@@ -14,6 +17,7 @@ public class IngredientInfo {
     private int unitWeight;
 
     public static TreeMap<String, IngredientInfo> ingredientInfos = new TreeMap<String, IngredientInfo>();
+    public static ObservableList<String> ingredientInfosGUI = FXCollections.observableArrayList();
 
     public IngredientInfo(String barcode, String name, int unitWeight) {
         this.barcode = barcode;
@@ -59,6 +63,8 @@ public class IngredientInfo {
             throw new Exception("ERROR:ingredient_cannot_have_negative_weight");
         }
         ingredientInfos.put(init_barcode, new IngredientInfo(init_barcode, init_name, init_weight));
+        ingredientInfosGUI.add(init_barcode);
+        FXCollections.sort(ingredientInfosGUI);
     }
     public static void infoExists(String barcode) throws Exception {
         if (!ingredientInfos.containsKey(barcode)) {

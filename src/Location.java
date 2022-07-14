@@ -1,5 +1,8 @@
 package src;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.TreeMap;
 
 /**
@@ -16,6 +19,7 @@ public class Location {
     private int currSpots;
 
     public static TreeMap<String, Location> locations = new TreeMap<String, Location>();
+    public static ObservableList<String> locationsGUI = FXCollections.observableArrayList();
 
     public Location(String name, int x, int y, int spaceLimit) {
         this.name = name;
@@ -92,5 +96,7 @@ public class Location {
             throw new Exception("ERROR:location_cannot_have_a_negative_space_limit");
         }
         locations.put(init_name, new Location(init_name, init_x_coord, init_y_coord, init_space_limit));
+        locationsGUI.add(init_name);
+        FXCollections.sort(locationsGUI);
     }
 }

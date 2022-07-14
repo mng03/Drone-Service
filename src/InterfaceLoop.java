@@ -336,6 +336,86 @@ public class InterfaceLoop {
         commandLineInput.close();
     }
 
+    public void commandGUI(String input) {
+        String[] wholeInputLines;
+        final String LINE_DELIMITER = "\n";
+        wholeInputLines = input.split(LINE_DELIMITER);
+        String[] tokens;
+        final String DELIMITER = ",";
+        for (int i = 0; i < wholeInputLines.length; i++) {
+            try {
+                // Determine the next command and echo it to the monitor for testing purposes
+                tokens = wholeInputLines[i].split(DELIMITER);
+                System.out.println("\n> " + wholeInputLines[i]);
+                if (tokens[0].indexOf("//") == 0) {
+                    // deliberate empty body to recognize and skip over comments
+                    // these comments ONLY work if they are at the front of the line - NOT at the middle nor end of the line
+                } else if (tokens[0].equals("make_ingredient")) {
+                    makeIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]));
+                } else if (tokens[0].equals("display_ingredients")) {
+                    displayIngredients();
+                } else if (tokens[0].equals("make_location")) {
+                    makeLocation(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]), Integer.parseInt(tokens[4]));
+                } else if (tokens[0].equals("display_locations")) {
+                    displayLocations();
+                } else if (tokens[0].equals("check_distance")) {
+                    checkDistance(tokens[1], tokens[2]);
+                } else if (tokens[0].equals("make_service")) {
+                    makeDeliveryService(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
+                } else if (tokens[0].equals("display_services")) {
+                    displayServices();
+                } else if (tokens[0].equals("make_restaurant")) {
+                    makeRestaurant(tokens[1], tokens[2]);
+                } else if (tokens[0].equals("display_restaurants")) {
+                    displayRestaurants();
+                } else if (tokens[0].equals("make_drone")) {
+                    makeDrone(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]), Integer.parseInt(tokens[4]));
+                } else if (tokens[0].equals("display_drones")) {
+                    displayDrones(tokens[1]);
+                } else if (tokens[0].equals("display_all_drones")) {
+                    displayAllDrones();
+                } else if (tokens[0].equals("fly_drone")) {
+                    flyDrone(tokens[1], Integer.parseInt(tokens[2]), tokens[3]);
+                } else if (tokens[0].equals("load_ingredient")) {
+                    loadIngredient(tokens[1], Integer.parseInt(tokens[2]), tokens[3], Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]));
+                } else if (tokens[0].equals("load_fuel")) {
+                    loadFuel(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+                } else if (tokens[0].equals("purchase_ingredient")) {
+                    purchaseIngredient(tokens[1], tokens[2], Integer.parseInt(tokens[3]), tokens[4], Integer.parseInt(tokens[5]));
+                } else if (tokens[0].equals("make_person")) {
+                    makePerson(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]), tokens[7]);
+                } else if (tokens[0].equals("display_persons")) {
+                    displayPersons();
+                } else if (tokens[0].equals("hire_worker")) {
+                    hireWorker(tokens[1], tokens[2]);
+                } else if (tokens[0].equals("fire_worker")) {
+                    fireWorker(tokens[1], tokens[2]);
+                } else if (tokens[0].equals("appoint_manager")) {
+                    appointManager(tokens[1], tokens[2]);
+                } else if (tokens[0].equals("train_pilot")) {
+                    trainPilot(tokens[1], tokens[2], tokens[3], Integer.parseInt(tokens[4]));
+                } else if (tokens[0].equals("appoint_pilot")) {
+                    appointPilot(tokens[1], tokens[2], Integer.parseInt(tokens[3]));
+                } else if (tokens[0].equals("join_swarm")) {
+                    joinSwarm(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+                } else if (tokens[0].equals("leave_swarm")) {
+                    leaveSwarm(tokens[1], Integer.parseInt(tokens[2]));
+                } else if (tokens[0].equals("collect_revenue")) {
+                    collectRevenue(tokens[1]);
+                } else if (tokens[0].equals("stop")) {
+                    System.out.println("stop acknowledged");
+                    System.out.println("simulation terminated");
+                    System.exit(0);
+                } else {
+                    System.out.println("command " + tokens[0] + " NOT acknowledged");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println();
+            }
+        }
+    }
+
     void displayMessage(String status, String text_output) {
         System.out.println(status.toUpperCase() + ":" + text_output.toLowerCase());
     }
