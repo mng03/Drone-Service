@@ -881,7 +881,7 @@ public class GUI extends Application {
             }
         });
         ComboBox ingredient = new ComboBox();
-        ingredient.setPromptText("Select location here");
+        ingredient.setPromptText("Select ingredient here");
         ingredient.setItems(IngredientInfo.ingredientInfosGUI);
         TextField quantity = new TextField();
         quantity.setPromptText("Type quantity here (int)");
